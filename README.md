@@ -1,6 +1,8 @@
 # Wave.js
 audio visualizer library for javascript
 
+<a href="https://piethoncoder.github.io/Wave.js/">Live Example</a>
+
 <p float="left">
    <img src="https://piethoncoder.github.io/Wave.js/media/s1.png" height="200" width="285">
    <img src="https://piethoncoder.github.io/Wave.js/media/s2.png" height="200" width="285">
