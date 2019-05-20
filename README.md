@@ -2,4 +2,6 @@
 audio visualizer library for javascript
 
 
-asdasd
+Include wave.js into your project
+
+cdn: 
