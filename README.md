@@ -19,6 +19,17 @@ audio visualizer library for javascript
 <h1>Visuals</h1>
 <ol>
    <li>wave</li>
+   <li>bars</li>
+   <li>bars_blocks</li>
+   <li>dualbars</li>
+   <li>orbs</li>
+   <li>dualbars_blocks</li>
+   <li>round_wave</li>
+   <li>shine</li>
+   <li>ring</li>
+   <li>flower</li>
+   <li>flower_blocks</li>
+   <li>star</li>
 </ol>
 
 <h1>Installation</h1>
