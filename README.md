@@ -106,3 +106,29 @@ wave.fromElement(a,"out_canvas",options);
 
 <h1>Full Example</h1>
 
+```
+<html>
+   <head></head>
+   <body>
+   
+      <canvas id="output" height="500" width="500"></canvas>   
+   
+   
+      <script src="https://cdn.jsdelivr.net/gh/PiethonCoder/wave.js/wave.js"></script>
+      <script>
+         var wave = new Wave();
+         
+         navigator.mediaDevices.getUserMedia({audio:true})
+         .then(function(stream) {
+            wave.fromStream(stream,"output",{shine:true});
+         })
+         .catch(function(err) {
+            console.log(err.message)
+         });
+      
+      
+      </script>
+   </body>
+</html>
+```
+
