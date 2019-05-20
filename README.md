@@ -87,7 +87,7 @@ wave.fromElement(audio,"canvas_id",{wave:true});
    <li>onFileLoad</li>
    <ul>
       <li>This event is triggered when the fromFile function finishes.</li>
-      <li>Set this variable equal to a function that takes one parameter <i>image</i>.Which is a data uri as a png.</li>
+      <li>Set this variable equal to a function that takes one parameter <i>image</i>, which is a data uri as a png.</li>
    </ul>
 </ul>
 
