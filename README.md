@@ -13,21 +13,19 @@ download the wave.js file from the root of this repository.
 <h1>Setup</h1>
 <p>create a new wave object.</p>
 
-<code>
+```javascript
    var wave = new Wave();
-</code>
+```
 
 
 <h1>Usage</h1>
 
 <p>call one of the three main function on the wave object, fromFile, fromStream, fromElement.</p>
 
-<code>
-<pre>
+```javascript
 var audio = document.getElementById("audio");
 wave.fromElement(audio,"canvas_id",{wave:true});
-</pre>
-</code>
+```
 
 
 <h3>Documentation</h3>
