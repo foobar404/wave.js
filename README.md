@@ -5,9 +5,6 @@ audio visualizer library for javascript
    <img src="https://piethoncoder.github.io/Wave.js/media/s1.png" height="200" width="285">
    <img src="https://piethoncoder.github.io/Wave.js/media/s2.png" height="200" width="285">
    <img src="https://piethoncoder.github.io/Wave.js/media/s3.png" height="200" width="285">
-   <span style="margin-right:50px;">asdasd</span>
-   <span style="width:285">asdasd</span>
-   <span style="width:285">asdasd</span>
    <img src="https://piethoncoder.github.io/Wave.js/media/s4.png" height="200" width="285">
    <img src="https://piethoncoder.github.io/Wave.js/media/s5.png" height="200" width="285">
    <img src="https://piethoncoder.github.io/Wave.js/media/s6.png" height="200" width="285">
@@ -18,6 +15,11 @@ audio visualizer library for javascript
    <img src="https://piethoncoder.github.io/Wave.js/media/s11.png" height="200" width="285">
    <img src="https://piethoncoder.github.io/Wave.js/media/s12.png" height="200" width="285">
 </p>  
+
+<h1>Visuals</h1>
+<ol>
+   <li>wave</li>
+</ol>
 
 <h1>Installation</h1>
 
