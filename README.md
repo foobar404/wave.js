@@ -86,11 +86,11 @@ wave.fromElement(audio,"canvas_id",{wave:true});
 
 <h1>Example</h1>
 
-'''javascript
+```javascript
 
 var wave = new Wave();
 
 var options = {};
 wave.fromElement("audio","out_canvas",)
-'''
+```
 
