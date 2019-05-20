@@ -1,6 +1,7 @@
 # Wave.js
 audio visualizer library for javascript
 
+<img src="https://images.pexels.com/photos/2289038/pexels-photo-2289038.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" height="100" width="100">
 
 <h1>Installation</h1>
 
