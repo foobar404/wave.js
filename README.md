@@ -37,8 +37,8 @@ wave.fromElement(audio,"canvas_id",{wave:true});
 <ul>
    <li>fromFile(file name,options)</li>  
    <ul>
-<!--       <li>file name can be a string of a local or external file, or a data url object.<li>
-      <li>options is a object of the options you want rendered.</li> -->
+      <li>file name can be a string of a local or external file, or a data url object.<li>
+<!--       <li>options is a object of the options you want rendered.</li> -->
    </ul>
    <br>
    <li>fromElement(element,canvas id,options)</li>
