@@ -10,8 +10,6 @@ or download the wave.js fine from the root of this repository.
 <p>create a new wave object.</p>
 
 <code>
-  <pre>
-    var wave = new Wave();
-  </pre>
+   var wave = new Wave();
 </code>
 
