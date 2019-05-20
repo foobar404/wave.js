@@ -69,5 +69,7 @@ wave.fromElement(audio,"canvas_id",{wave:true});
 <h3>Options</h3>
 <ul>
    <li><b>stroke:</b> the thickness of the lines that are drawn. Default is 2.</li>
+   <li><b>colors:</b> an array of colors used in the visual. Any valid css color is legal.</li>
+   <li><b>wave:</b>boolean -- shows the wave visual effect if true. All boolean defaults are false.</li>
 </ul>
 
