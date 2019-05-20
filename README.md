@@ -70,6 +70,17 @@ wave.fromElement(audio,"canvas_id",{wave:true});
 <ul>
    <li><b>stroke:</b> the thickness of the lines that are drawn. Default is 2.</li>
    <li><b>colors:</b> an array of colors used in the visual. Any valid css color is legal.</li>
-   <li><b>wave:</b>boolean -- shows the wave visual effect if true. All boolean defaults are false.</li>
+   <li><b>wave:</b> boolean -- shows the wave visual effect if true. All boolean defaults are false.</li>
+   <li><b>ring:</b> boolean -- shows the ring visual effect if true.</li>
+   <li><b>bars:</b> boolean -- shows the bars visual effect if true.</li>
+   <li><b>bars_blocks:</b> boolean -- shows the bars_blocks visual effect if true.</li>
+   <li><b>dualbars:</b> boolean -- shows the dualbars visual effect if true.</li>
+   <li><b>dualbars_blocks:</b> boolean -- shows the dualbars_blocks visual effect if true.</li>
+   <li><b>flower:</b> boolean -- shows the flower visual effect if true.</li>
+   <li><b>flower_blocks:</b> boolean -- shows the flower_blocks visual effect if true.</li>
+   <li><b>star:</b> boolean -- shows the star visual effect if true.</li>
+   <li><b>round_wave:</b> boolean -- shows the round_wave visual effect if true.</li>
+   <li><b>shine:</b> boolean -- shows the shine visual effect if true.</li>
+   <li><b>orbs:</b> boolean -- shows the orbs visual effect if true.</li>
 </ul>
 
