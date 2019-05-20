@@ -14,7 +14,7 @@ download the wave.js file from the root of this repository.
 <p>create a new wave object.</p>
 
 ```javascript
-   var wave = new Wave();
+var wave = new Wave();
 ```
 
 
@@ -80,6 +80,15 @@ wave.fromElement(audio,"canvas_id",{wave:true});
    <li><b>round_wave:</b> boolean -- shows the round_wave visual effect if true.</li>
    <li><b>shine:</b> boolean -- shows the shine visual effect if true.</li>
    <li><b>orbs:</b> boolean -- shows the orbs visual effect if true.</li>
+</ul>
+
+<h3>Events</h3>
+<ul>
+   <li>onFileLoad</li>
+   <ul>
+      <li>This event is triggered when the fromFile function finishes.</li>
+      <li>Set this variable equal to a function that takes one parameter <i>image</i>.Which is a data uri as a png.</li>
+   </ul>
 </ul>
 
 <h1>Example</h1>
