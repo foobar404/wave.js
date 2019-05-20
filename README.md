@@ -106,7 +106,7 @@ wave.fromElement(a,"out_canvas",options);
 
 <h1>Full Example</h1>
 
-```
+```html
 <html>
    <head></head>
    <body>
