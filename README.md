@@ -90,7 +90,11 @@ wave.fromElement(audio,"canvas_id",{wave:true});
 
 var wave = new Wave();
 
-var options = {};
-wave.fromElement("audio","out_canvas",)
+var a = document.getElementById("audio");
+var options = {stroke:4,colors:["#24292e","#547ee2"],star:true};
+
+wave.fromElement(a,"out_canvas",options);
 ```
+
+<h1>Full Example</h1>
 
