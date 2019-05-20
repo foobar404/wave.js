@@ -84,3 +84,13 @@ wave.fromElement(audio,"canvas_id",{wave:true});
    <li><b>orbs:</b> boolean -- shows the orbs visual effect if true.</li>
 </ul>
 
+<h1>Example</h1>
+
+'''javascript
+
+var wave = new Wave();
+
+var options = {};
+wave.fromElement("audio","out_canvas",)
+'''
+
