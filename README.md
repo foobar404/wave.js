@@ -1,9 +1,18 @@
 # Wave.js
 audio visualizer library for javascript
 
-<img src="https://piethoncoder.github.io/Wave.js/media/s1.png" height="200" width="250">
-<img src="https://piethoncoder.github.io/Wave.js/media/s2.png" height="200" width="250">
-<img src="https://piethoncoder.github.io/Wave.js/media/s3.png" height="200" width="250">
+<img src="https://piethoncoder.github.io/Wave.js/media/s1.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s2.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s3.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s4.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s5.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s6.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s7.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s8.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s9.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s10.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s11.png" height="200" width="350">
+<img src="https://piethoncoder.github.io/Wave.js/media/s12.png" height="200" width="350">
 
 <h1>Installation</h1>
 
