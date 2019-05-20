@@ -10,7 +10,7 @@ https://cdn.jsdelivr.net/gh/PiethonCoder/wave.js/wave.js
 <h3>Or</h3>
 download the wave.js fine from the root of this repository.
 
-<h3>Setup</h3>
+<h1>Setup</h1>
 <p>create a new wave object.</p>
 
 <code>
@@ -18,7 +18,7 @@ download the wave.js fine from the root of this repository.
 </code>
 
 
-<h3>Usage</h3>
+<h1>Usage</h1>
 
 <p>call one of the three main function on the wave object, fromFile, fromStream, fromElement.</p>
 
