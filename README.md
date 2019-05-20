@@ -1,9 +1,9 @@
 # Wave.js
 audio visualizer library for javascript
 
-<img src="https://piethoncoder.github.io/Wave.js/media/s1.png" height="100" width="100" style="float:right">
-<img src="https://piethoncoder.github.io/Wave.js/media/s2.png" height="100" width="100" style="float:right">
-<img src="https://piethoncoder.github.io/Wave.js/media/s3.png" height="100" width="100" style="float:right">
+<img src="https://piethoncoder.github.io/Wave.js/media/s1.png" height="200" width="250">
+<img src="https://piethoncoder.github.io/Wave.js/media/s2.png" height="200" width="250">
+<img src="https://piethoncoder.github.io/Wave.js/media/s3.png" height="200" width="250">
 
 <h1>Installation</h1>
 
