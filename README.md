@@ -120,7 +120,7 @@ wave.fromElement(a,"out_canvas",options);
          
          navigator.mediaDevices.getUserMedia({audio:true})
          .then(function(stream) {
-            wave.fromStream(stream,"output",{shine:true});
+            wave.fromStream(stream,"output",{shine:true,colors:["pink","blue"]});
          })
          .catch(function(err) {
             console.log(err.message)
