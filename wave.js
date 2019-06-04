@@ -759,8 +759,7 @@ class Wave {
         e.onended = function () {
             cancelAnimationFrame(animation);
         }
-
-
     }
-
 }
+window.Wave = Wave;
+
