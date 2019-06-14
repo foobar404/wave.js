@@ -37,7 +37,10 @@ audio visualizer library for javascript
 <h1>Installation</h1>
 
 <h3>Install With CDN</h3> 
-https://cdn.jsdelivr.net/gh/PiethonCoder/wave.js/wave.js
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/foobar404/wave.js/wave.js"></script>
+```
 
 <h3>Or</h3>
 download the wave.js file from the root of this repository.
