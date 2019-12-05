@@ -1,7 +1,7 @@
 # Wave.js
 audio visualizer library for javascript
 
-<a href="https://foobar404.github.io/Wave.js/">Live Example</a>
+<a href="https://leonemil.github.io/Wave.js/docs//">Live Example</a>
 
 <p float="left">
    <img src="https://foobar404.github.io/Wave.js/media/s1.png" height="200" width="285">
