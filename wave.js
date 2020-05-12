@@ -3,7 +3,7 @@ class Wave {
     sources = {};
     onFileLoad;
 
-    constructor() {}
+    constructor() { }
 
     findSize(size) {
 
@@ -302,36 +302,36 @@ class Wave {
             ctx.stroke();
         }
 
-//        if (options.vortex) {
-//            var r = h / 4;
-//            var cx = w / 2;
-//            var cy = h / 2;
-//            var percent = r / 255;
-//            var point_count = 20;
-//            var increase = (360 / point_count) * Math.PI / 180;
-//
-//            for (var point = 1; point <= point_count; point++) {
-//                var p = (data[point]) * percent;
-//                var a = point * increase;
-//
-//                var sx = cx + (r) * Math.cos(a);
-//                var sy = cy + (r) * Math.sin(a);
-//                ctx.lineTo(sx, sy);
-//
-//                var dx = cx + (r + p) * Math.cos(a + (increase * (p / 100)));
-//                var dy = cy + (r + p) * Math.sin(a + (increase * (p / 100)));
-//                ctx.lineTo(dx, dy);
-//
-//            }
-//            ctx.closePath();
-//
-//
-//            if (options.colors[1]) {
-//                ctx.fillStyle = options.colors[1];
-//                ctx.fill();
-//            }
-//            ctx.stroke();
-//        }
+        //        if (options.vortex) {
+        //            var r = h / 4;
+        //            var cx = w / 2;
+        //            var cy = h / 2;
+        //            var percent = r / 255;
+        //            var point_count = 20;
+        //            var increase = (360 / point_count) * Math.PI / 180;
+        //
+        //            for (var point = 1; point <= point_count; point++) {
+        //                var p = (data[point]) * percent;
+        //                var a = point * increase;
+        //
+        //                var sx = cx + (r) * Math.cos(a);
+        //                var sy = cy + (r) * Math.sin(a);
+        //                ctx.lineTo(sx, sy);
+        //
+        //                var dx = cx + (r + p) * Math.cos(a + (increase * (p / 100)));
+        //                var dy = cy + (r + p) * Math.sin(a + (increase * (p / 100)));
+        //                ctx.lineTo(dx, dy);
+        //
+        //            }
+        //            ctx.closePath();
+        //
+        //
+        //            if (options.colors[1]) {
+        //                ctx.fillStyle = options.colors[1];
+        //                ctx.fill();
+        //            }
+        //            ctx.stroke();
+        //        }
 
         if (options.flower_blocks) {
             var min = 5;
@@ -645,7 +645,7 @@ class Wave {
             source.connect(analyser);
             source.connect(audioCtx.destination); //playback audio
 
-            this.sources[e.toString()] = {
+            this.sources[stream.toString()] = {
                 "audioCtx": audioCtx,
                 "analyser": analyser,
                 "source": source
