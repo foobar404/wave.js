@@ -1,0 +1,20 @@
+{
+  "name": "wave.js",
+  "version": "1.0.0",
+  "description": "audio visualizer library for javascript",
+  "main": "./dist/bundle.cjs.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" "
+  },
+  "keywords": [
+    "audio",
+    "visualizer",
+    "wave",
+    "sound"
+  ],
+  "author": "Austin Michaud",
+  "license": "MIT"
+}

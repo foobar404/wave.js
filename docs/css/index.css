@@ -1,0 +1,34 @@
+:root {
+    --color1: #00c1fc;
+    --color2: #ffbe00;
+    --color3: #06d28b;
+    --color4: #07188f;
+}
+
+#visual {
+    background: linear-gradient(90deg, #320b50, #060f2c);
+}
+
+.wave_option {
+    border: 2px solid #0005;
+    background: #0004;
+    width: 12.5%;
+    color: #06d28b;
+}
+
+.wave_option:hover {
+    color: #000;
+    background: #06d28b;
+}
+
+.active {
+    color: #000;
+    background: #06d28b;
+}
+
+#player{
+    background: #320b50;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
