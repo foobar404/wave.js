@@ -1,8 +1,8 @@
 {
-  "name": "wave.js",
-  "version": "0.0.0",
+  "name": "@foobar404/wave",
+  "version": "1.0.1",
   "description": "audio visualizer library for javascript",
-  "main": "./dist/bundle.cjs.js",
+  "main": "dist/bundle.cjs.js",
   "directories": {
     "test": "test"
   },
@@ -13,8 +13,10 @@
     "audio",
     "visualizer",
     "wave",
-    "sound"
+    "sound",
+    "music"
   ],
   "author": "Austin Michaud",
-  "license": "MIT"
+  "license": "MIT",
+  "files": ["dist/bundle.cjs.js"]
 }
