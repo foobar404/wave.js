@@ -18,6 +18,13 @@ npm i @foobar404/wave
 ```
 
 <h1>Setup</h1>
+
+<p>if your using npm use a default import to include wave</p>
+
+```javascript
+import Wave from "@foobar404/wave"
+```
+
 <p>create a new wave object.</p>
 
 ```javascript
