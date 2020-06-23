@@ -1,6 +1,6 @@
 {
   "name": "wave.js",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "audio visualizer library for javascript",
   "main": "./dist/bundle.cjs.js",
   "directories": {
