@@ -12,7 +12,7 @@ audio visualizer library for javascript
 ```
 
 <h3>Or NPM</h3>
-```
+```html
 npm i @foobar404/wave
 ```
 
