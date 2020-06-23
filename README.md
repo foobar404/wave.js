@@ -1,5 +1,5 @@
 # Wave.js
-audio visualizer library for javascript
+audio visualizer library for javascript 
 
 <a href="https://foobar404.github.io/Wave.js/">Live Example</a>
 
