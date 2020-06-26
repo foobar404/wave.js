@@ -27,7 +27,8 @@ var Wave = (function () {
             source = this.sources[element.toString()].source;
         }
 
-        analyser.fftSize = 512;
+        // analyser.fftSize = 512;
+        analyser.fftsize = 16384;
         let bufferLength = analyser.frequencyBinCount;
         let data = new Uint8Array(bufferLength);
 
@@ -168,7 +169,8 @@ var Wave = (function () {
             source = this.sources[stream.toString()].source;
         }
 
-        analyser.fftSize = 512;
+        // analyser.fftSize = 512;
+        analyser.fftsize = 16384;
         let bufferLength = analyser.frequencyBinCount;
         this.current_stream.data = new Uint8Array(bufferLength);
 
@@ -705,23 +707,81 @@ var Wave = (function () {
         ctx.stroke();
     };
 
+    var drawTest = (functionContext) => {
+        let { data, options, ctx, h, w, Helper } = functionContext;
+
+        let helper = new Helper(ctx);
+
+    };
+
+    var drawRings = (functionContext) => {
+        let { data, options, ctx, h, w, Helper } = functionContext;
+        let { colors } = options;
+        let helper = new Helper(ctx);
+        let minDimension = (h < w) ? h : w;
+
+        data = helper.mutateData(data, "organize");
+        data = [data.mids, data.vocals];
+
+        data[0] = helper.mutateData(data[0], "scale", minDimension / 4);
+        data[1] = helper.mutateData(data[1], "scale", minDimension / 8);
+
+        data[0] = helper.mutateData(data[0], "shrink", 1 / 5);
+
+        data[0] = helper.mutateData(data[0], "reverb");
+        data[1] = helper.mutateData(data[1], "reverb");
+
+        let outerCircle = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data[0].length, data[0]);
+        let innerCircle = helper.getPoints("circle", minDimension / 4, [w / 2, h / 2], data[1].length, data[1]);
+
+        helper.drawPolygon(outerCircle.end, { close: true, radius: 4, lineColor: colors[0], color: colors[1] });
+        helper.drawPolygon(innerCircle.end, { close: true, radius: 4, lineColor: colors[2], color: colors[3] });
+
+        let middle = ((minDimension / 4) + (minDimension / 2)) / 2;
+        let largerInner = data[1] = helper.mutateData(data[1], "scale", ((minDimension / 4) - (minDimension / 2)));
+        let innerBars = helper.getPoints("circle", middle, [w / 2, h / 2], data[1].length, largerInner);
+        innerBars.start.forEach((start, i) => {
+            helper.drawLine(start, innerBars.end[i], { lineColor: colors[4] || colors[2] });
+        });
+    };
+
+    var drawShineRings = (functionContext) => {
+        let { data, options, ctx, h, w, Helper } = functionContext;
+        let { colors } = options;
+
+        let helper = new Helper(ctx);
+        let minDimension = (h < w) ? h : w;
+
+        data = helper.mutateData(data, "organize");
+        data.vocals = helper.mutateData(data.vocals, "scale", (minDimension / 2) / 2);
+        data.base = helper.mutateData(data.base, "scale", (minDimension / 2) / 2);
+
+        let outerBars = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data.vocals.length, data.vocals);
+        let innerWave = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data.vocals.length, data.vocals, { offset: 100 });
+        let thinLine = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data.base.length, data.base, { offset: 100 });
+
+        outerBars.start.forEach((start, i) => {
+            helper.drawLine(start, outerBars.end[i], { lineColor: colors[0] });
+        });
+
+        helper.drawPolygon(innerWave.start, { close: true, lineColor: colors[1], color: colors[3], radius: 5 });
+        helper.drawPolygon(thinLine.start, { close: true, lineColor: colors[2], color: colors[4], radius: 5 });
+    };
+
     //options:type,colors,stroke
     function visualize(data, canvas, options = {}) {
         //options
         if (!options.stroke) options.stroke = 1;
         if (!options.colors) options.colors = ["#d92027", "#ff9234", "#ffcd3c", "#35d0ba"];
 
-        let c;
         if (typeof canvas == "string") {
-            c = document.getElementById(canvas);
-        } else {
-            c = canvas;
+            canvas = document.getElementById(canvas);
         }
+        if (!canvas) return;
 
-        let ctx = c.getContext("2d");
-
-        let h = c.height;
-        let w = c.width;
+        let ctx = canvas.getContext("2d");
+        let h = canvas.height;
+        let w = canvas.width;
 
         //clear canvas
         ctx.clearRect(0, 0, w, h);
@@ -734,6 +794,7 @@ var Wave = (function () {
             "wave": drawWave,
             "shine": drawShine,
             "ring": drawRing,
+            "rings": drawRings,
             "bars": drawBars,
             "dualbars": drawDualbars,
             "orbs": drawOrbs,
@@ -745,11 +806,13 @@ var Wave = (function () {
             "star": drawStar,
             "round wave": drawRoundWave,
             "wings": drawWings,
-            "vortex": drawVortex
+            "vortex": drawVortex,
+            "shine rings": drawShineRings,
+            "test": drawTest
         };
 
         const functionContext = {
-            data, options, ctx, h, w
+            data, options, ctx, h, w, Helper: this.Helper
         };
 
         if (options.type instanceof Array) {
@@ -759,6 +822,311 @@ var Wave = (function () {
         }
 
     }
+
+    function Helper(ctx) {
+        this.ctx = ctx;
+        this.mainColor = "black";
+    }
+
+    Helper.prototype = {
+        __toRadians__(degree) {
+            return (degree * Math.PI) / 180;
+        },
+        __rotatePoint__([pointX, pointY], [originX, originY], degree) {
+            //clockwise
+            let angle = this.__toRadians__(degree);
+            let rotatedX = Math.cos(angle) * (pointX - originX) - Math.sin(angle) * (pointY - originY) + originX;
+            let rotatedY = Math.sin(angle) * (pointX - originX) + Math.cos(angle) * (pointY - originY) + originY;
+
+            return [rotatedX, rotatedY]
+        },
+        mutateData(data, type, extra = null) {
+            if (type === "mirror") {
+                let rtn = [];
+
+                for (let i = 0; i < data.length; i += 2) {
+                    rtn.push(data[i]);
+                }
+
+                rtn = [...rtn, ...rtn.reverse()];
+                return rtn
+            }
+
+            if (type === "shrink") {
+                let dead = {};
+                let count = data.length;
+
+                //resize array by % of current array 
+                if (extra < 1) {
+                    extra = data.length * extra;
+                }
+
+                while (count > extra) {
+
+                    let tempDead = {};
+                    let low = Infinity;
+                    let deadCount = 0;
+
+                    for (let i = 0; i < data.length; i++) {
+                        if (i in dead) continue
+                        if (data[i] < low) {
+                            low = data[i];
+                            tempDead = {};
+                            tempDead[i] = true;
+                            deadCount = 1;
+                        } else if (data[i] === low) {
+                            tempDead[i] = true;
+                            deadCount += 1;
+                            if (count - deadCount <= extra) {
+                                break
+                            }
+                        }
+                    }
+                    count -= deadCount;
+                    dead = { ...dead, ...tempDead };
+                }
+                let rtn = [];
+                data.forEach((val, i) => {
+                    if (!(i in dead)) rtn.push(val);
+                });
+
+                return rtn
+            }
+
+            if (type === "split") {
+                let size = Math.floor(data.length / extra);
+                let rtn = [];
+                let temp = [];
+
+                let track = 0;
+                for (let i = 0; i <= size * extra; i++) {
+                    if (track === size) {
+                        rtn.push(temp);
+                        temp = [];
+                        track = 0;
+                    }
+
+                    temp.push(data[i]);
+                    track++;
+                }
+
+                return rtn
+            }
+
+            if (type === "scale") {
+                let scalePercent = extra / 255;
+                let rtn = data.map(value => value * scalePercent);
+                return rtn
+            }
+
+            if (type === "organize") {
+                let rtn = {};
+                rtn.base = data.slice(60, 120);
+                rtn.vocals = data.slice(120, 255);
+                rtn.mids = data.slice(255, 2000);
+                return rtn
+            }
+
+            if (type === "reverb") {
+                let rtn = [];
+                data.forEach((val, i) => {
+                    rtn.push(val - (data[i + 1] || 0));
+                });
+                return rtn
+            }
+
+            if (type === "amp") {
+                let rtn = [];
+                data.forEach(val => {
+                    rtn.push(val * (extra / 100 + 1));
+                });
+                return rtn
+            }
+
+            if (type === "min") {
+                let rtn = [];
+                data.forEach(value => {
+                    if (value < extra) value = extra;
+                    rtn.push(value);
+                });
+                return rtn
+            }
+        },
+        getPoints(shape, size, [originX, originY], pointCount, endPoints, options = {}) {
+            let { offset = 0 } = options;
+            let rtn = {
+                start: [],
+                end: []
+            };
+
+            if (shape === "circle") {
+
+                let degreePerPoint = 360 / pointCount;
+                let radianPerPoint = this.__toRadians__(degreePerPoint);
+                let radius = size / 2;
+
+                for (let i = 1; i <= pointCount; i++) {
+                    let currentRadian = radianPerPoint * i;
+                    let currentEndPoint = endPoints[i - 1];
+                    let pointOffset = endPoints[i - 1] * (offset / 100);
+
+                    let x = originX + (radius - pointOffset) * Math.cos(currentRadian);
+                    let y = originY + (radius - pointOffset) * Math.sin(currentRadian);
+
+                    rtn.start.push([x, y]);
+
+                    x = originX + ((radius - pointOffset) + currentEndPoint) * Math.cos(currentRadian);
+                    y = originY + ((radius - pointOffset) + currentEndPoint) * Math.sin(currentRadian);
+
+                    rtn.end.push([x, y]);
+
+                }
+
+                return rtn
+            }
+
+            if (shape === "line") {
+                let increment = size / pointCount;
+
+                for (let i = 0; i <= pointCount; i++) {
+                    let degree = extra || 0;
+
+                    let startingPoint = this.__rotatePoint__([originX + (i * increment), originY],
+                        [originX, originY], degree);
+                    rtn.start.push(startingPoint);
+
+                    let endingPoint = this.__rotatePoint__([originX + (i * increment), originY + endPoints[i]],
+                        [originX, originY], degree);
+                    rtn.end.push(endingPoint);
+                }
+
+                return rtn
+
+            }
+
+        },
+        drawCircle([x, y], diameter, options) {
+            let { color, lineColor = this.ctx.strokeStyle } = options;
+
+            this.ctx.beginPath();
+            this.ctx.arc(x, y, diameter / 2, 0, 2 * Math.PI);
+            this.ctx.strokeStyle = lineColor;
+            this.ctx.stroke();
+            this.ctx.fillStyle = color;
+            if (color) this.ctx.fill();
+        },
+        drawOval([x, y], height, width, options) {
+            let { rotation = 0, color, lineColor = this.ctx.strokeStyle } = options;
+            if (rotation) rotation = this.__toRadians__(rotation);
+
+            this.ctx.beginPath();
+            this.ctx.ellipse(x, y, width, height, rotation, 0, 2 * Math.PI);
+            this.ctx.strokeStyle = lineColor;
+            this.ctx.stroke();
+            this.ctx.fillStyle = color;
+            if (color) this.ctx.fill();
+        },
+        drawSquare([x, y], diameter, options) {
+            this.rectangle(x, y, diameter, diameter, options);
+        },
+        drawRectangle([x, y], height, width, options = {}) {
+            let { color, lineColor = this.ctx.strokeStyle, radius = 0, rotate = 0 } = options;
+
+            // if (width < 2 * radius) radius = width / 2;
+            // if (height < 2 * radius) radius = height / 2;
+
+            this.ctx.beginPath();
+            this.ctx.moveTo(x + radius, y);
+            let p1 = this.__rotatePoint__([x + width, y], [x, y], rotate);
+            let p2 = this.__rotatePoint__([x + width, y + height], [x, y], rotate);
+            this.ctx.arcTo(p1[0], p1[1], p2[0], p2[1], radius);
+
+            let p3 = this.__rotatePoint__([x + width, y + height], [x, y], rotate);
+            let p4 = this.__rotatePoint__([x, y + height], [x, y], rotate);
+            this.ctx.arcTo(p3[0], p3[1], p4[0], p4[1], radius);
+
+            let p5 = this.__rotatePoint__([x, y + height], [x, y], rotate);
+            let p6 = this.__rotatePoint__([x, y], [x, y], rotate);
+            this.ctx.arcTo(p5[0], p5[1], p6[0], p6[1], radius);
+
+            let p7 = this.__rotatePoint__([x, y], [x, y], rotate);
+            let p8 = this.__rotatePoint__([x + width, y], [x, y], rotate);
+            this.ctx.arcTo(p7[0], p7[1], p8[0], p8[1], radius);
+            this.ctx.closePath();
+
+            this.ctx.strokeStyle = lineColor;
+            this.ctx.stroke();
+            this.ctx.fillStyle = color;
+            if (color) this.ctx.fill();
+
+        },
+        drawLine([fromX, fromY], [toX, toY], options = {}) {
+            let { lineColor = this.ctx.strokeStyle } = options;
+
+            this.ctx.beginPath();
+            this.ctx.moveTo(fromX, fromY);
+            this.ctx.lineTo(toX, toY);
+            this.ctx.strokeStyle = lineColor;
+            this.ctx.stroke();
+        },
+        drawPolygon(points, options = {}) {
+            let { color, lineColor = this.ctx.strokeStyle, radius = 0, close = false } = options;
+
+            function getRoundedPoint(x1, y1, x2, y2, radius, first) {
+                let total = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+                let idx = first ? radius / total : (total - radius) / total;
+
+                return [x1 + (idx * (x2 - x1)), y1 + (idx * (y2 - y1))];
+            }
+
+            function getRoundedPoints(pts, radius) {
+                let len = pts.length;
+                let res = new Array(len);
+
+                for (let i2 = 0; i2 < len; i2++) {
+                    let i1 = i2 - 1;
+                    let i3 = i2 + 1;
+
+                    if (i1 < 0) i1 = len - 1;
+                    if (i3 == len) i3 = 0;
+
+                    let p1 = pts[i1];
+                    let p2 = pts[i2];
+                    let p3 = pts[i3];
+
+                    let prevPt = getRoundedPoint(p1[0], p1[1], p2[0], p2[1], radius, false);
+                    let nextPt = getRoundedPoint(p2[0], p2[1], p3[0], p3[1], radius, true);
+                    res[i2] = [prevPt[0], prevPt[1], p2[0], p2[1], nextPt[0], nextPt[1]];
+                }
+                return res;
+            }
+            if (radius > 0) {
+                points = getRoundedPoints(points, radius);
+            }
+
+            let i, pt, len = points.length;
+            for (i = 0; i < len; i++) {
+                pt = points[i];
+                if (i == 0) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pt[0], pt[1]);
+                } else {
+                    this.ctx.lineTo(pt[0], pt[1]);
+                }
+                if (radius > 0) {
+                    this.ctx.quadraticCurveTo(pt[2], pt[3], pt[4], pt[5]);
+                }
+            }
+
+            if (close) this.ctx.closePath();
+            this.ctx.strokeStyle = lineColor;
+            this.ctx.stroke();
+
+            this.ctx.fillStyle = color;
+            if (color) this.ctx.fill();
+        }
+
+    };
 
     function Wave() {
         this.current_stream = {};
@@ -770,7 +1138,8 @@ var Wave = (function () {
         fromElement,
         fromFile,
         ...fromStream$1,
-        visualize
+        visualize,
+        Helper
     };
 
     return Wave;

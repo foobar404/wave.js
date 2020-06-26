@@ -60,12 +60,11 @@ wave.fromElement(audio,"canvas_id",{type:"wave"});
       <li>options is a object of the options you want rendered.</li>
    </ul>
    <br>
-   <li>fromStream(stream,canvas id,options,muted(optional))</li>
+   <li>fromStream(stream,canvas id,options)</li>
    <ul>
       <li>stream is a stream object, usually gotten from the getUserMedia() api.</li>
       <li>canvas id is the id of the canvas you want to use as output. This is where the visualization will appear.</li>
       <li>options is a object of the options you want rendered.</li>
-      <li>muted is an optional parameter that controls if the audio is played outloud or not. Defaults to false.</li>
    </ul>
    <br>
    <li>stopStream()</li>
@@ -85,8 +84,7 @@ wave.fromElement(audio,"canvas_id",{type:"wave"});
    <li><b>colors:</b> An array of colors used in the visual. Any valid css color is legal.</li>
    <li><b>type:</b> String or array of visuals you want to display.</li>
    <ul>
-      <li>["wave","bars","bars blocks","dualbars","orbs","dualbars blocks","round wave","shine","ring","flower","flower
-         blocks","star"]</li>
+      <li>[ "bars", "bars blocks", "dualbars", "dualbars blocks", "flower", "flower blocks", "orbs", "ring", "rings", "round wave", "shine","shine rings", "star", "wave"]</li>
    </ul>
 </ul>
 
