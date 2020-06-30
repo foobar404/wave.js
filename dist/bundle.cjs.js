@@ -1,55 +1,55 @@
 'use strict';
 
-function fromElement(element, canvas_id, options) {
-    if (typeof element === "string") {
-        element = document.getElementById(element);
-    }
+function fromElement(element_id, canvas_id, options) {
 
-    let audioCtx, analyser, source;
-    if (!this.sources[element.toString()]) {
-        audioCtx = new AudioContext();
-        analyser = audioCtx.createAnalyser();
+    let element = document.getElementById(element_id);
+    if (!element) return
+    element.crossOrigin = "anonymous";
 
-        source = audioCtx.createMediaElementSource(element);
-        source.connect(analyser);
-        source.connect(audioCtx.destination); //playback audio
+    //track elements used so multiple elements use the same data
+    this.activeElements[element_id] = this.activeElements[element_id] || {};
+    if (this.activeElements[element_id].count) this.activeElements[element_id].count += 1;
+    else this.activeElements[element_id].count = 1;
 
-        this.sources[element.toString()] = {
-            "audioCtx": audioCtx,
-            "analyser": analyser,
-            "source": source
-        };
-    } else {
-        cancelAnimationFrame(this.sources[element.toString()].animation);
-        audioCtx = this.sources[element.toString()].audioCtx;
-        analyser = this.sources[element.toString()].analyser;
-        source = this.sources[element.toString()].source;
-    }
+    const currentCount = this.activeElements[element_id].count;
 
-    // analyser.fftSize = 512;
-    analyser.fftsize = 16384;
+    //fix "audio element already has media source issue"
+    let clone = element.cloneNode(true);
+    element.parentNode.replaceChild(clone, element);
+    element = clone;
+
+    let audioCtx = new AudioContext();
+    let analyser = audioCtx.createAnalyser();
+    let source = audioCtx.createMediaElementSource(element);
+
+    source.connect(analyser);
+    source.connect(audioCtx.destination);
+
+    analyser.fftsize = 32768;
     let bufferLength = analyser.frequencyBinCount;
     let data = new Uint8Array(bufferLength);
-
-    let animation;
-    let self = this;
+    let frameCount = 1;
 
     function renderFrame() {
-        animation = requestAnimationFrame(renderFrame);
-        analyser.getByteFrequencyData(data);
-        self.sources[element.toString()].animation = animation;
+        requestAnimationFrame(renderFrame);
+        frameCount++;
 
-        self.visualize(data, canvas_id, options);
+        //check if this element is the last to be called 
+        if (!(currentCount < this.activeElements[element_id].count)) {
+            analyser.getByteFrequencyData(data);
+            this.activeElements[element_id].data = data;
+        }
+
+        this.visualize(this.activeElements[element_id].data, canvas_id, options, frameCount);
     }
 
-    element.onplay = function () {
+    renderFrame = renderFrame.bind(this);
+    renderFrame();
+
+    element.onplay = () => {
         audioCtx.resume();
-        renderFrame();
     };
 
-    element.onended = function () {
-        cancelAnimationFrame(animation);
-    };
 }
 
 function fromFile(file, options = {}) {
@@ -168,8 +168,7 @@ function fromStream(stream, canvas_id, options = {}) {
         source = this.sources[stream.toString()].source;
     }
 
-    // analyser.fftSize = 512;
-    analyser.fftsize = 16384;
+    analyser.fftsize = 32768;
     let bufferLength = analyser.frequencyBinCount;
     this.current_stream.data = new Uint8Array(bufferLength);
 
@@ -203,31 +202,22 @@ var fromStream$1 = {
 };
 
 var drawWave = (functionContext) => {
-    let { data, options, ctx, h, w } = functionContext;
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let { colors } = options;
+    const helper = new Helper(ctx);
 
-    let point_count = 120;
-    let increase = w / point_count;
-    let percent = h / 255;
+    // data = helper.mutateData(data, "shrink", 200)
+    data = helper.mutateData(data, "split", 4)[0];
+    data = helper.mutateData(data, "scale", h);
 
-    ctx.moveTo(0, h - data[0] * percent);
+    let points = helper.getPoints("line", w, [0, h], data.length, data, { offset: 100 });
+    points.start = points.start.slice(0, points.end.length - 1);
+    points.start.push([w, h]);
+    points.start.push([0, h]);
 
-    for (let point = 1; point <= point_count; point++) {
-        let p = data[point]; //get value
-        p *= percent;
+    helper.drawPolygon(points.start, { lineColor: colors[0], color: colors[1], radius: (h * .008) });
 
-        ctx.lineTo(increase * point, h - p); //x,y
-    }
 
-    ctx.stroke();
-
-    if (options.colors[1]) {
-        ctx.lineTo(w, h);
-        ctx.lineTo(0, h);
-        ctx.lineTo(0, data[0]);
-
-        ctx.fillStyle = options.colors[1];
-        ctx.fill();
-    }
 };
 
 var drawShine = (functionContext) => {
@@ -366,62 +356,24 @@ var drawDualbars = (functionContext) => {
 };
 
 var drawOrbs = (functionContext) => {
-    let { data, options, ctx, h, w } = functionContext;
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let { colors } = options;
+    const helper = new Helper(ctx);
 
-    let percent = (h - 25) / 255;
-    let point_count = 128;
-    let increase = w / point_count;
-    let min = 5;
+    data = helper.mutateData(data, "organize").mids;
+    data = helper.mutateData(data, "split", 2)[0];
+    data = helper.mutateData(data, "shrink", 100);
+    data = helper.mutateData(data, "mirror");
+    data = helper.mutateData(data, "scale", h);
+    data = helper.mutateData(data, "amp", .75);
 
-    for (let point = 1; point <= point_count; point++) {
-        let p = data[point]; //get value
-        p += min;
-        p *= percent;
+    let points = helper.getPoints("line", w, [0, h / 2], data.length, data, { offset: 50 });
+    points.start.forEach((start, i) => {
+        helper.drawLine(start, points.end[i], { lineColor: colors[0] });
 
-        let x = increase * point;
-        let mid = (h / 2) + (p / 2);
-
-        ctx.moveTo(x, mid);
-        ctx.arc(x, mid + 4, 4, 0, 2 * Math.PI);
-
-        ctx.moveTo(x, mid);
-        ctx.lineTo(x, mid - p);
-
-        ctx.moveTo(x, mid - p);
-        ctx.arc(x, mid - p - 4, 4, 0, 2 * Math.PI);
-
-    }
-
-    ctx.fillStyle = options.colors[0];
-    if (options.colors[1]) ctx.fillStyle = options.colors[1];
-
-    ctx.stroke();
-    ctx.fill();
-};
-
-var drawMatrix = (functionContext) => {
-    // let { data, canvas, options, ctx, h, w } = functionContext;
-
-    // let waveSize = 8;
-    // let percent = (h / 2) / 255;
-    // let increase = w / waveSize;
-
-    // ctx.lineJoin = 'round';
-
-    // for (let color in options.colors) {
-    //     let c = options.colors[color];
-
-    //     ctx.moveTo(0, (h / 2));
-
-    //     for (let point = 1; point <= waveSize; point++) {
-    //         let p = data[point + (color * waveSize)] * percent;
-    //         let x = point * increase;
-    //         let ll = point + (color * waveSize);
-
-    //         ctx.lineTo(x, p); //x/2,(h/2),
-    //     }
-    //     ctx.stroke();
-    // }
+        helper.drawCircle(start, h * .01, { color: colors[1] || colors[0] });
+        helper.drawCircle(points.end[i], h * .01, { color: colors[1] || colors[0] });
+    });
 };
 
 var drawFlower = (functionContext) => {
@@ -653,66 +605,6 @@ var drawRoundWave = (functionContext) => {
     }
 };
 
-var drawWings = (functionContext) => {
-    let { options, ctx, h, w } = functionContext;
-
-    let r = h / 4;
-    let cx = w / 2;
-    let cy = h / 2;
-
-    ctx.arc(cx, cy, r, 0, 2 * Math.PI);
-
-    ctx.lineCap = "round";
-    ctx.fillStyle = options.colors[1] || options.colors[0];
-    ctx.fill();
-
-
-    ctx.lineWidth = 10;
-    if (options.stroke) ctx.lineWidth = options.stroke;
-
-    ctx.stroke();
-};
-
-var drawVortex = (functionContext) => {
-    let { data, options, ctx, h, w } = functionContext;
-
-    let r = h / 4;
-    let cx = w / 2;
-    let cy = h / 2;
-    let percent = r / 255;
-    let point_count = 20;
-    let increase = (360 / point_count) * Math.PI / 180;
-
-    for (let point = 1; point <= point_count; point++) {
-        let p = (data[point]) * percent;
-        let a = point * increase;
-
-        let sx = cx + (r) * Math.cos(a);
-        let sy = cy + (r) * Math.sin(a);
-        ctx.lineTo(sx, sy);
-
-        let dx = cx + (r + p) * Math.cos(a + (increase * (p / 100)));
-        let dy = cy + (r + p) * Math.sin(a + (increase * (p / 100)));
-        ctx.lineTo(dx, dy);
-
-    }
-    ctx.closePath();
-
-
-    if (options.colors[1]) {
-        ctx.fillStyle = options.colors[1];
-        ctx.fill();
-    }
-    ctx.stroke();
-};
-
-var drawTest = (functionContext) => {
-    let { data, options, ctx, h, w, Helper } = functionContext;
-
-    let helper = new Helper(ctx);
-
-};
-
 var drawRings = (functionContext) => {
     let { data, options, ctx, h, w, Helper } = functionContext;
     let { colors } = options;
@@ -726,9 +618,11 @@ var drawRings = (functionContext) => {
     data[1] = helper.mutateData(data[1], "scale", minDimension / 8);
 
     data[0] = helper.mutateData(data[0], "shrink", 1 / 5);
+    data[0] = helper.mutateData(data[0], "split", 2)[0];
 
     data[0] = helper.mutateData(data[0], "reverb");
     data[1] = helper.mutateData(data[1], "reverb");
+
 
     let outerCircle = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data[0].length, data[0]);
     let innerCircle = helper.getPoints("circle", minDimension / 4, [w / 2, h / 2], data[1].length, data[1]);
@@ -767,8 +661,187 @@ var drawShineRings = (functionContext) => {
     helper.drawPolygon(thinLine.start, { close: true, lineColor: colors[2], color: colors[4], radius: 5 });
 };
 
+var drawCubes = (functionContext) => {
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let { colors } = options;
+    let helper = new Helper(ctx);
+
+    data = helper.mutateData(data, "organize").base;
+
+    data = helper.mutateData(data, "shrink", 20).slice(0, 19);
+    data = helper.mutateData(data, "scale", h);
+
+    let points = helper.getPoints("line", w, [0, h], data.length, data);
+
+    let spacing = 5;
+    let squareSize = (w / 20) - spacing;
+    let colorIndex = 0;
+
+    points.start.forEach((start, i) => {
+        let squareCount = Math.ceil(data[i] / squareSize);
+
+        //find color stops from total possible squares in bar 
+        let totalSquares = (h - (spacing * (h / squareSize))) / squareSize;
+        let colorStop = Math.ceil(totalSquares / colors.length);
+
+        for (let j = 1; j <= squareCount; j++) {
+            let origin = [start[0], (start[1] - (squareSize * j) - (spacing * j))];
+            helper.drawSquare(origin, squareSize, { color: colors[colorIndex], lineColor: "black" });
+            if (j % colorStop == 0) {
+                colorIndex++;
+                if (colorIndex >= colors.length) colorIndex = colors.length - 1;
+            }
+        }
+        colorIndex = 0;
+    });
+};
+
+var drawBigBars = (functionContext) => {
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let { colors } = options;
+    const helper = new Helper(ctx);
+
+    data = helper.mutateData(data, "organize").vocals;
+    data = helper.mutateData(data, "shrink", 10);
+    data = helper.mutateData(data, "scale", h);
+    data = helper.mutateData(data, "amp", 1);
+    let points = helper.getPoints("line", w, [0, h / 2], data.length, data, { offset: 50 });
+
+    let colorIndex = 0;
+    let colorStop = Math.ceil(data.length / colors.length);
+    points.start.forEach((start, i) => {
+        if ((i + 1) % colorStop == 0) colorIndex++;
+        helper.drawRectangle(start, data[i], w / data.length, { color: colors[colorIndex] });
+    });
+
+};
+
+var drawShockwave = (functionContext) => {
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let { colors } = options;
+
+    let helper = new Helper(ctx);
+
+    data = helper.mutateData(data, "shrink", 300);
+    data = helper.mutateData(data, "scale", h / 2);
+    data = helper.mutateData(data, "split", 4).slice(0, 3);
+
+    let colorIndex = 0;
+    data.forEach((points) => {
+        let wavePoints = helper.getPoints("line", w, [0, h / 2], points.length, points);
+        helper.drawPolygon(wavePoints.end, { lineColor: colors[colorIndex], radius: (h * .015) });
+
+        let invertedPoints = helper.getPoints("line", w, [0, h / 2], points.length, points, { offset: 100 });
+        helper.drawPolygon(invertedPoints.start, { lineColor: colors[colorIndex], radius: (h * .015) });
+        colorIndex++;
+    });
+};
+
+var drawFireworks = (functionContext) => {
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let { colors } = options;
+    const helper = new Helper(ctx);
+
+    data = helper.mutateData(data, "shrink", 200).slice(0, 120);
+    data = helper.mutateData(data, "mirror");
+    data = helper.mutateData(data, "scale", (h / 4) + ((h / 4) * .35));
+
+    let points = helper.getPoints("circle", h / 2, [w / 2, h / 2], data.length, data, { offset: 35, rotate: 270 });
+
+    points.start.forEach((start, i) => {
+        helper.drawLine(start, points.end[i]);
+    });
+
+    helper.drawPolygon(points.start, { close: true });
+
+    points.end.forEach((end, i) => {
+        helper.drawCircle(end, h * .01, { color: colors[0] });
+    });
+};
+
+var drawStatic = (functionContext) => {
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let helper = new Helper(ctx);
+
+    data = helper.mutateData(data, "shrink", 1 / 8);
+    data = helper.mutateData(data, "split", 2)[0];
+    data = helper.mutateData(data, "scale", h);
+
+    let points = helper.getPoints("line", w, [0, h / 2], data.length, data, { offset: 50 });
+    let prevPoint = null;
+    points.start.forEach((start, i) => {
+        if (prevPoint) {
+            helper.drawLine(prevPoint, start);
+        }
+        helper.drawLine(start, points.end[i]);
+        prevPoint = points.end[i];
+    });
+
+
+};
+
+var drawWeb = (functionContext) => {
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let { colors } = options;
+    const helper = new Helper(ctx);
+    let minDimension = (h < w) ? h : w;
+
+    data = helper.mutateData(data, "shrink", 100);
+    data = helper.mutateData(data, "split", 2)[0];
+    data = helper.mutateData(data, "scale", h / 4);
+
+    let dataCopy = data;
+
+    let points = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data.length, data);
+    helper.drawPolygon(points.end, { close: true });
+
+    points.start.forEach((start, i) => {
+        helper.drawLine(start, points.end[i]);
+    });
+
+    data = helper.mutateData(data, "scale", .7);
+    points = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data.length, data);
+    helper.drawPolygon(points.end, { close: true });
+
+    data = helper.mutateData(data, "scale", .3);
+    points = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data.length, data);
+    helper.drawPolygon(points.end, { close: true });
+
+    helper.drawCircle([w / 2, h / 2], minDimension / 2, { color: colors[2] });
+
+    dataCopy = helper.mutateData(dataCopy, "scale", 1.4);
+    points = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], dataCopy.length, dataCopy);
+    points.end.forEach((end, i) => {
+        helper.drawCircle(end, minDimension * .01, { color: colors[1], lineColor: colors[1] || colors[0] });
+    });
+};
+
+var drawStitches = (functionContext) => {
+    let { data, options, ctx, h, w, Helper } = functionContext;
+    let helper = new Helper(ctx);
+    let minDimension = (h < w) ? h : w;
+
+    data = helper.mutateData(data, "shrink", 200);
+    data = helper.mutateData(data, "split", 2)[0];
+    data = helper.mutateData(data, "scale", h / 2);
+
+    let points = helper.getPoints("circle", minDimension / 2, [w / 2, h / 2], data.length, data, { offset: 50 });
+
+    helper.drawPolygon(points.end, { close: true });
+    helper.drawPolygon(points.start, { close: true });
+
+    for (let i = 0; i < points.start.length; i += 1) {
+        let start = points.start[i];
+        i++;
+        let end = points.end[i] || points.end[0];
+
+        helper.drawLine(start, end);
+        helper.drawLine(end, points.start[i + 1] || points.start[0]);
+    }
+};
+
 //options:type,colors,stroke
-function visualize(data, canvas, options = {}) {
+function visualize(data, canvas, options = {}, frame) {
     //options
     if (!options.stroke) options.stroke = 1;
     if (!options.colors) options.colors = ["#d92027", "#ff9234", "#ffcd3c", "#35d0ba"];
@@ -782,43 +855,75 @@ function visualize(data, canvas, options = {}) {
     let h = canvas.height;
     let w = canvas.width;
 
-    //clear canvas
-    ctx.clearRect(0, 0, w, h);
-    ctx.beginPath();
+
 
     ctx.strokeStyle = options.colors[0];
     ctx.lineWidth = options.stroke;
 
     let typeMap = {
-        "wave": drawWave,
-        "shine": drawShine,
-        "ring": drawRing,
-        "rings": drawRings,
         "bars": drawBars,
+        "bars blocks": drawBarsBlocks,
+        "big bars": drawBigBars,
+        "cubes": drawCubes,
         "dualbars": drawDualbars,
-        "orbs": drawOrbs,
-        "matrix": drawMatrix,
+        "dualbars blocks": drawDualbarsBlocks,
+        "fireworks": drawFireworks,
         "flower": drawFlower,
         "flower blocks": drawFlowerBlocks,
-        "bars blocks": drawBarsBlocks,
-        "dualbars blocks": drawDualbarsBlocks,
-        "star": drawStar,
+        "orbs": drawOrbs,
+        "ring": drawRing,
+        "rings": drawRings,
         "round wave": drawRoundWave,
-        "wings": drawWings,
-        "vortex": drawVortex,
+        "shine": drawShine,
         "shine rings": drawShineRings,
-        "test": drawTest
+        "shockwave": drawShockwave,
+        "star": drawStar,
+        "static": drawStatic,
+        "stitches": drawStitches,
+        "wave": drawWave,
+        "web": drawWeb
+    };
+
+    let frameRateMap = {
+        "bars": 1,
+        "bars blocks": 1,
+        "big bars": 2,
+        "cubes": 4,
+        "dualbars": 1,
+        "dualbars blocks": 1,
+        "fireworks": 1,
+        "flower": 1,
+        "flower blocks": 1,
+        "ring": 1,
+        "rings": 1,
+        "round wave": 1,
+        "orbs": 1,
+        "shine": 1,
+        "shine rings": 1,
+        "shockwave": 1,
+        "star": 1,
+        "static": 1,
+        "stitches": 1,
+        "wave": 1,
+        "web": 1
     };
 
     const functionContext = {
         data, options, ctx, h, w, Helper: this.Helper
     };
 
-    if (options.type instanceof Array) {
-        options.type.forEach(type => typeMap[type](functionContext));
-    } else {
-        typeMap[options.type](functionContext);
-    }
+    if (typeof options.type == "string") options.type = [options.type];
+
+    options.type.forEach(type => {
+        //abide by the frame rate
+        if (frame % frameRateMap[type] === 0) {
+            //clear canvas
+            ctx.clearRect(0, 0, w, h);
+            ctx.beginPath();
+
+            typeMap[type](functionContext);
+        }
+    });
 
 }
 
@@ -852,42 +957,19 @@ Helper.prototype = {
         }
 
         if (type === "shrink") {
-            let dead = {};
-            let count = data.length;
-
             //resize array by % of current array 
             if (extra < 1) {
                 extra = data.length * extra;
             }
 
-            while (count > extra) {
-
-                let tempDead = {};
-                let low = Infinity;
-                let deadCount = 0;
-
-                for (let i = 0; i < data.length; i++) {
-                    if (i in dead) continue
-                    if (data[i] < low) {
-                        low = data[i];
-                        tempDead = {};
-                        tempDead[i] = true;
-                        deadCount = 1;
-                    } else if (data[i] === low) {
-                        tempDead[i] = true;
-                        deadCount += 1;
-                        if (count - deadCount <= extra) {
-                            break
-                        }
-                    }
-                }
-                count -= deadCount;
-                dead = { ...dead, ...tempDead };
-            }
             let rtn = [];
-            data.forEach((val, i) => {
-                if (!(i in dead)) rtn.push(val);
-            });
+            let splitAt = Math.floor(data.length / extra);
+
+            for (let i = 1; i <= extra; i++) {
+                let arraySection = data.slice(i * splitAt, (i * splitAt) + splitAt);
+                let middle = arraySection[Math.floor(arraySection.length / 2)];
+                rtn.push(middle);
+            }
 
             return rtn
         }
@@ -914,6 +996,7 @@ Helper.prototype = {
 
         if (type === "scale") {
             let scalePercent = extra / 255;
+            if (extra <= 3 && extra >= 0) scalePercent = extra;
             let rtn = data.map(value => value * scalePercent);
             return rtn
         }
@@ -937,7 +1020,7 @@ Helper.prototype = {
         if (type === "amp") {
             let rtn = [];
             data.forEach(val => {
-                rtn.push(val * (extra / 100 + 1));
+                rtn.push(val * (extra + 1));
             });
             return rtn
         }
@@ -952,7 +1035,7 @@ Helper.prototype = {
         }
     },
     getPoints(shape, size, [originX, originY], pointCount, endPoints, options = {}) {
-        let { offset = 0 } = options;
+        let { offset = 0, rotate = 0, customOrigin = [] } = options;
         let rtn = {
             start: [],
             end: []
@@ -971,13 +1054,15 @@ Helper.prototype = {
 
                 let x = originX + (radius - pointOffset) * Math.cos(currentRadian);
                 let y = originY + (radius - pointOffset) * Math.sin(currentRadian);
+                let point1 = this.__rotatePoint__([x, y], [originX, originY], rotate);
 
-                rtn.start.push([x, y]);
+                rtn.start.push(point1);
 
                 x = originX + ((radius - pointOffset) + currentEndPoint) * Math.cos(currentRadian);
                 y = originY + ((radius - pointOffset) + currentEndPoint) * Math.sin(currentRadian);
+                let point2 = this.__rotatePoint__([x, y], [originX, originY], rotate);
 
-                rtn.end.push([x, y]);
+                rtn.end.push(point2);
 
             }
 
@@ -987,14 +1072,18 @@ Helper.prototype = {
         if (shape === "line") {
             let increment = size / pointCount;
 
-            for (let i = 0; i <= pointCount; i++) {
-                let degree = extra || 0;
+            originX = customOrigin[0] || originX;
+            originY = customOrigin[1] || originY;
 
-                let startingPoint = this.__rotatePoint__([originX + (i * increment), originY],
+            for (let i = 0; i <= pointCount; i++) {
+                let degree = rotate;
+                let pointOffset = endPoints[i] * (offset / 100);
+
+                let startingPoint = this.__rotatePoint__([originX + (i * increment), originY - pointOffset],
                     [originX, originY], degree);
                 rtn.start.push(startingPoint);
 
-                let endingPoint = this.__rotatePoint__([originX + (i * increment), originY + endPoints[i]],
+                let endingPoint = this.__rotatePoint__([originX + (i * increment), (originY + endPoints[i]) - pointOffset],
                     [originX, originY], degree);
                 rtn.end.push(endingPoint);
             }
@@ -1004,7 +1093,7 @@ Helper.prototype = {
         }
 
     },
-    drawCircle([x, y], diameter, options) {
+    drawCircle([x, y], diameter, options = {}) {
         let { color, lineColor = this.ctx.strokeStyle } = options;
 
         this.ctx.beginPath();
@@ -1014,7 +1103,7 @@ Helper.prototype = {
         this.ctx.fillStyle = color;
         if (color) this.ctx.fill();
     },
-    drawOval([x, y], height, width, options) {
+    drawOval([x, y], height, width, options = {}) {
         let { rotation = 0, color, lineColor = this.ctx.strokeStyle } = options;
         if (rotation) rotation = this.__toRadians__(rotation);
 
@@ -1025,8 +1114,8 @@ Helper.prototype = {
         this.ctx.fillStyle = color;
         if (color) this.ctx.fill();
     },
-    drawSquare([x, y], diameter, options) {
-        this.rectangle(x, y, diameter, diameter, options);
+    drawSquare([x, y], diameter, options = {}) {
+        this.drawRectangle([x, y], diameter, diameter, options);
     },
     drawRectangle([x, y], height, width, options = {}) {
         let { color, lineColor = this.ctx.strokeStyle, radius = 0, rotate = 0 } = options;
@@ -1131,6 +1220,7 @@ function Wave() {
     this.current_stream = {};
     this.sources = {};
     this.onFileLoad = null;
+    this.activeElements = {};
 }
 
 Wave.prototype = {

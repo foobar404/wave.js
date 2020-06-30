@@ -1,5 +1,7 @@
-# Wave.js ![version](https://img.shields.io/badge/version-1.1.2-purple.svg)
+# Wave.js ![version](https://img.shields.io/badge/version-1.2.0-purple.svg)
+
 audio visualizer library for javascript
+(20+ designs)
 
 <a href="https://foobar404.github.io/Wave.js/">Live Example</a>
 
@@ -37,8 +39,7 @@ var wave = new Wave();
 <p>call one of the three main function on the wave object, fromFile, fromStream, fromElement.</p>
 
 ```javascript
-var audio = document.getElementById("audio");
-wave.fromElement(audio,"canvas_id",{type:"wave"});
+wave.fromElement("audio_element_id","canvas_id",{type:"wave"});
 ```
 
 
@@ -53,14 +54,14 @@ wave.fromElement(audio,"canvas_id",{type:"wave"});
       <li>options is a object of the options you want rendered.</li>
    </ul>
    <br>
-   <li>fromElement(element,canvas id,options)</li>
+   <li>fromElement(element_id,canvas_id,options)</li>
    <ul>
-      <li>element is a audio element object, or the id of a audio element as a string.</li>
+      <li>element_id is the id of a audio element as a string.</li>
       <li>canvas id is the id of the canvas you want to use as output. This is where the visualization will appear.</li>
       <li>options is a object of the options you want rendered.</li>
    </ul>
    <br>
-   <li>fromStream(stream,canvas id,options)</li>
+   <li>fromStream(stream,canvas_id,options)</li>
    <ul>
       <li>stream is a stream object, usually gotten from the getUserMedia() api.</li>
       <li>canvas id is the id of the canvas you want to use as output. This is where the visualization will appear.</li>
@@ -84,7 +85,8 @@ wave.fromElement(audio,"canvas_id",{type:"wave"});
    <li><b>colors:</b> An array of colors used in the visual. Any valid css color is legal.</li>
    <li><b>type:</b> String or array of visuals you want to display.</li>
    <ul>
-      <li>[ "bars", "bars blocks", "dualbars", "dualbars blocks", "flower", "flower blocks", "orbs", "ring", "rings", "round wave", "shine","shine rings", "star", "wave"]</li>
+      <li>["bars", "bars blocks", "big bars", "cubes", "dualbars", "dualbars blocks", "fireworks", "flower","flower blocks", "orbs", "ring", "rings", "round wave", "shine", "shine rings", "shockwave", "star","static", "stitches", "web", "wave"
+        ]</li>
    </ul>
 </ul>
 
@@ -102,12 +104,10 @@ wave.fromElement(audio,"canvas_id",{type:"wave"});
 
 ```javascript
 
-var wave = new Wave();
+let wave = new Wave();
+let options = {stroke:4,colors:["#24292e","#547ee2"],type:"star"};
 
-var a = document.getElementById("audio");
-var options = {stroke:4,colors:["#24292e","#547ee2"],type:"star"};
-
-wave.fromElement(a,"out_canvas",options);
+wave.fromElement("audio_element_id","canvas_id",options);
 ```
 
 <h1>Full Example</h1>

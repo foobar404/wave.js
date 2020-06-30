@@ -1,7 +1,7 @@
 {
   "name": "@foobar404/wave",
-  "version": "1.1.2",
-  "description": "audio visualizer library for javascript",
+  "version": "1.2.0",
+  "description": "audio visualizer library for javascript (20+ designs)",
   "browser": "dist/bundle.cjs.js",
   "directories": {
     "test": "test"
@@ -14,7 +14,8 @@
     "visualizer",
     "wave",
     "sound",
-    "music"
+    "music",
+    "canvas"
   ],
   "author": "Austin Michaud",
   "license": "MIT",
