@@ -1,9 +1,10 @@
 class Wave {
-    current_stream = {};
-    sources = {};
-    onFileLoad;
 
-    constructor() { }
+    constructor() {
+        this.current_stream = {};
+        this.sources = {};
+        this.onFileLoad;
+    }
 
     findSize(size) {
 
@@ -555,6 +556,9 @@ class Wave {
         var audio = new Audio();
         audio.src = file;
 
+        var AudioContext = window.AudioContext          // Default
+            || window.webkitAudioContext;  // Safari and old versions of Chrome
+
         var audioCtx = new AudioContext();
         var analyser = audioCtx.createAnalyser();
 
@@ -636,6 +640,10 @@ class Wave {
         this.current_stream.id = canvas_id;
         this.current_stream.options = options;
 
+
+        var AudioContext = window.AudioContext          // Default
+            || window.webkitAudioContext;  // Safari and old versions of Chrome
+
         var audioCtx, analyser, source;
         if (!this.sources[stream.toString()]) {
             audioCtx = new AudioContext();
@@ -702,6 +710,10 @@ class Wave {
         if (typeof e == "string") {
             e = document.getElementById(e);
         }
+
+
+        var AudioContext = window.AudioContext          // Default
+            || window.webkitAudioContext;  // Safari and old versions of Chrome
 
 
         var audioCtx, analyser, source;
