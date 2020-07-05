@@ -1,3 +1,5 @@
+var AudioContext = window.AudioContext          // Default
+    || window.webkitAudioContext;  // Safari and old versions of Chrome
 class Wave {
 
     constructor() {
@@ -556,9 +558,6 @@ class Wave {
         var audio = new Audio();
         audio.src = file;
 
-        var AudioContext = window.AudioContext          // Default
-            || window.webkitAudioContext;  // Safari and old versions of Chrome
-
         var audioCtx = new AudioContext();
         var analyser = audioCtx.createAnalyser();
 
@@ -641,9 +640,6 @@ class Wave {
         this.current_stream.options = options;
 
 
-        var AudioContext = window.AudioContext          // Default
-            || window.webkitAudioContext;  // Safari and old versions of Chrome
-
         var audioCtx, analyser, source;
         if (!this.sources[stream.toString()]) {
             audioCtx = new AudioContext();
@@ -711,9 +707,6 @@ class Wave {
             e = document.getElementById(e);
         }
 
-
-        var AudioContext = window.AudioContext          // Default
-            || window.webkitAudioContext;  // Safari and old versions of Chrome
 
 
         var audioCtx, analyser, source;
