@@ -2,53 +2,94 @@
 
 function fromElement(element_id, canvas_id, options) {
 
+    const waveContext = this;
     let element = document.getElementById(element_id);
     if (!element) return
     element.crossOrigin = "anonymous";
 
-    //track elements used so multiple elements use the same data
-    this.activeElements[element_id] = this.activeElements[element_id] || {};
-    if (this.activeElements[element_id].count) this.activeElements[element_id].count += 1;
-    else this.activeElements[element_id].count = 1;
+    function run() {
 
-    const currentCount = this.activeElements[element_id].count;
+        //track current wave for canvas
+        this.activeCanvas = this.activeCanvas || {};
+        this.activeCanvas[canvas_id] = JSON.stringify(options);
 
-    //fix "audio element already has media source issue"
-    let clone = element.cloneNode(true);
-    element.parentNode.replaceChild(clone, element);
-    element = clone;
+        //track elements used so multiple elements use the same data
+        this.activeElements[element_id] = this.activeElements[element_id] || {};
+        if (this.activeElements[element_id].count) this.activeElements[element_id].count += 1;
+        else this.activeElements[element_id].count = 1;
 
-    let audioCtx = new AudioContext();
-    let analyser = audioCtx.createAnalyser();
-    let source = audioCtx.createMediaElementSource(element);
+        const currentCount = this.activeElements[element_id].count;
 
-    source.connect(analyser);
-    source.connect(audioCtx.destination);
+        //fix "AudioContext already connected" error
+        window.$wave = window.$wave || {};
+        window.$wave[element.id] = window.$wave[element.id] || {};
 
-    analyser.fftsize = 32768;
-    let bufferLength = analyser.frequencyBinCount;
-    let data = new Uint8Array(bufferLength);
-    let frameCount = 1;
+        let audioCtx = window.$wave[element.id].audioCtx || new AudioContext();
+        window.$wave[element.id].audioCtx = audioCtx;
 
-    function renderFrame() {
-        requestAnimationFrame(renderFrame);
-        frameCount++;
+        let analyser = window.$wave[element.id].analyzer || audioCtx.createAnalyser();
+        window.$wave[element.id].analyser = analyser;
 
-        //check if this element is the last to be called 
-        if (!(currentCount < this.activeElements[element_id].count)) {
-            analyser.getByteFrequencyData(data);
-            this.activeElements[element_id].data = data;
+        let source = window.$wave[element.id].source || audioCtx.createMediaElementSource(element);
+        window.$wave[element.id].source = source;
+
+
+        //beep test for ios
+        let oscillator = audioCtx.createOscillator();
+        oscillator.frequency.value = 1;
+        oscillator.connect(audioCtx.destination);
+        oscillator.start(0);
+        oscillator.stop(0);
+
+        source.connect(analyser);
+        source.connect(audioCtx.destination);
+
+
+        analyser.fftsize = 32768;
+        let bufferLength = analyser.frequencyBinCount;
+        let data = new Uint8Array(bufferLength);
+        let frameCount = 1;
+
+        function renderFrame() {
+            //only run one wave visual per canvas
+            if (JSON.stringify(options) != this.activeCanvas[canvas_id]) {
+                return
+            }
+
+            requestAnimationFrame(renderFrame);
+            frameCount++;
+
+            //check if this element is the last to be called 
+            if (!(currentCount < this.activeElements[element_id].count)) {
+                analyser.getByteFrequencyData(data);
+                this.activeElements[element_id].data = data;
+            }
+
+            this.visualize(this.activeElements[element_id].data, canvas_id, options, frameCount);
         }
 
-        this.visualize(this.activeElements[element_id].data, canvas_id, options, frameCount);
+        renderFrame = renderFrame.bind(this);
+        renderFrame();
+
     }
 
-    renderFrame = renderFrame.bind(this);
-    renderFrame();
 
-    element.onplay = () => {
-        audioCtx.resume();
+    const create = () => {
+        //remove all events
+        ["touchstart", "touchmove", "touchend", "mouseup", "click", "play"].forEach(event => {
+            element.removeEventListener(event, create, { once: true });
+        });
+
+        run.call(waveContext);
     };
+
+    //wait for a valid user gesture 
+    document.body.addEventListener("touchstart", create, { once: true });
+    document.body.addEventListener("touchmove", create, { once: true });
+    document.body.addEventListener("touchend", create, { once: true });
+    document.body.addEventListener("mouseup", create, { once: true });
+    document.body.addEventListener("click", create, { once: true });
+    element.addEventListener("play", create, { once: true });
 
 }
 
@@ -842,6 +883,8 @@ var drawStitches = (functionContext) => {
 
 //options:type,colors,stroke
 function visualize(data, canvas, options = {}, frame) {
+    //make a clone of options
+    options = { ...options };
     //options
     if (!options.stroke) options.stroke = 1;
     if (!options.colors) options.colors = ["#d92027", "#ff9234", "#ffcd3c", "#35d0ba"];
@@ -887,8 +930,8 @@ function visualize(data, canvas, options = {}, frame) {
     let frameRateMap = {
         "bars": 1,
         "bars blocks": 1,
-        "big bars": 2,
-        "cubes": 4,
+        "big bars": 1,
+        "cubes": 1,
         "dualbars": 1,
         "dualbars blocks": 1,
         "fireworks": 1,
@@ -1221,6 +1264,8 @@ function Wave() {
     this.sources = {};
     this.onFileLoad = null;
     this.activeElements = {};
+
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
 }
 
 Wave.prototype = {
