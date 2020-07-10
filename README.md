@@ -1,11 +1,11 @@
-# [Wave.js](https://foobar404.github.io/Wave.js/) ![version](https://img.shields.io/badge/version-1.2.4-purple.svg)
+# [Wave.js](https://foobar404.github.io/Wave.js/#/) ![version](https://img.shields.io/badge/version-1.2.4-purple.svg)
 
 Audio visualizer library for javascript
 (20+ designs).
 
-[DOCUMENTATION](https://foobar404.github.io/Wave.js/docs)
+[DOCUMENTATION](https://foobar404.github.io/Wave.js/#/docs)
 
-[LIVE EXAMPLES](https://foobar404.github.io/Wave.js/)
+[LIVE EXAMPLES](https://foobar404.github.io/Wave.js/#/)
 
 
 # Installation 
@@ -22,7 +22,7 @@ Audio visualizer library for javascript
 npm i @foobar404/wave
 ```
 
-<h1>Setup</h1>
+# Setup
 
 <p>If your using npm use a default import to include wave.</p>
 
@@ -43,7 +43,7 @@ let [wave] = useState(new Wave());
 ```
 
 
-<h1>Usage</h1>
+# Usage
 
 <p>Call one of the three main function on the wave object, fromFile, fromStream, fromElement.</p>
 
@@ -53,7 +53,7 @@ wave.fromElement("audio_element_id","canvas_id",{type:"wave"});
 
 # Documentation
 
-<p>View the current documentation for Wave.js <a href="https://foobar404.github.io/Wave.js/docs" target="_blank">here</a>.</p>
+<p>View the current documentation for Wave.js <a href="https://foobar404.github.io/Wave.js/#/docs" target="_blank">here</a>.</p>
 
 <h1>Example</h1>
 
