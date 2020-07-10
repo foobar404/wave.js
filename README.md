@@ -9,7 +9,7 @@ Audio visualizer library for javascript
 
 
 # Installation 
-
+ 
 <h3>Install With CDN</h3>
 
 ```html
