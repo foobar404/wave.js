@@ -11,6 +11,7 @@ function Wave() {
     this.sources = {};
     this.onFileLoad = null;
     this.activeElements = {}
+    this.activated = false
 
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
 }

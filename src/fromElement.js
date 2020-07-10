@@ -6,6 +6,8 @@ export default function fromElement(element_id, canvas_id, options) {
     element.crossOrigin = "anonymous";
 
     function run() {
+        //user gesture has happened
+        this.activated = true
 
         //track current wave for canvas
         this.activeCanvas = this.activeCanvas || {}
@@ -28,9 +30,18 @@ export default function fromElement(element_id, canvas_id, options) {
         let analyser = window.$wave[element.id].analyzer || audioCtx.createAnalyser();
         window.$wave[element.id].analyser = analyser
 
-        let source = window.$wave[element.id].source || audioCtx.createMediaElementSource(element);
-        window.$wave[element.id].source = source
+        //check if the element has a source already assigned and make sure they point to the same 
+        //reference because React will make a new element with a different reference
+        let source = null;
+        if (window.$wave[element.id].source)
+            if (window.$wave[element.id].source.mediaElement === element)
+                source = window.$wave[element.id].source
+            else
+                source = audioCtx.createMediaElementSource(element);
+        else
+            source = audioCtx.createMediaElementSource(element);
 
+        window.$wave[element.id].source = source
 
         //beep test for ios
         let oscillator = audioCtx.createOscillator();
@@ -42,7 +53,6 @@ export default function fromElement(element_id, canvas_id, options) {
         source.connect(analyser)
         source.connect(audioCtx.destination)
 
-
         analyser.fftsize = 32768;
         let bufferLength = analyser.frequencyBinCount;
         let data = new Uint8Array(bufferLength);
@@ -53,6 +63,10 @@ export default function fromElement(element_id, canvas_id, options) {
             if (JSON.stringify(options) != this.activeCanvas[canvas_id]) {
                 return
             }
+
+            //if the element or canvas go out of scope, stop animation
+            if (!document.getElementById(element_id) || !document.getElementById(canvas_id))
+                return
 
             requestAnimationFrame(renderFrame);
             frameCount++
@@ -81,12 +95,18 @@ export default function fromElement(element_id, canvas_id, options) {
         run.call(waveContext)
     }
 
-    //wait for a valid user gesture 
-    document.body.addEventListener("touchstart", create, { once: true })
-    document.body.addEventListener("touchmove", create, { once: true })
-    document.body.addEventListener("touchend", create, { once: true })
-    document.body.addEventListener("mouseup", create, { once: true })
-    document.body.addEventListener("click", create, { once: true })
-    element.addEventListener("play", create, { once: true })
+    if (this.activated) {
+        run.call(waveContext)
+    } else {
+        //wait for a valid user gesture 
+        document.body.addEventListener("touchstart", create, { once: true })
+        document.body.addEventListener("touchmove", create, { once: true })
+        document.body.addEventListener("touchend", create, { once: true })
+        document.body.addEventListener("mouseup", create, { once: true })
+        document.body.addEventListener("click", create, { once: true })
+        element.addEventListener("play", create, { once: true })
+    }
+
+
 
 }
