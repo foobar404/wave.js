@@ -104,7 +104,7 @@ export default function fromElement(element_id, canvas_id, options) {
         run.call(waveContext)
     }
 
-    if (this.activated) {
+    if (this.activated || options['skipUserEventsWatcher']) {
         run.call(waveContext)
     } else {
         //wait for a valid user gesture 
