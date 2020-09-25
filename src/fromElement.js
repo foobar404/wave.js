@@ -1,4 +1,23 @@
 export default function fromElement(element_id, canvas_id, options) {
+    const globalAccessKey = [options.globalAccessKey || '$wave'];
+    const initGlobalObject = (elementId) => {
+        window[globalAccessKey] = window[globalAccessKey] || {};
+        window[globalAccessKey][elementId] = window[globalAccessKey][elementId] || {};
+    };
+
+    const getGlobal = options['getGlobal'] || function(elementId, accessKey) {
+        initGlobalObject(elementId);
+        return window[globalAccessKey][elementId][accessKey];
+    };
+
+    const setGlobal = options['setGlobal'] || function(elementId, accessKey, value) {
+        let returnValue = getGlobal(elementId);
+        if(!returnValue) {
+            window[globalAccessKey][elementId][accessKey] = window[globalAccessKey][elementId][accessKey] || value;
+            returnValue = window[globalAccessKey][elementId][accessKey];
+        }
+        return returnValue;
+    };
 
     const waveContext = this;
     let element = document.getElementById(element_id);
@@ -20,31 +39,21 @@ export default function fromElement(element_id, canvas_id, options) {
 
         const currentCount = this.activeElements[element_id].count
 
-        //fix "AudioContext already connected" error
-        window.$wave = window.$wave || {}
-        window.$wave[element.id] = window.$wave[element.id] || {}
+        const audioCtx = setGlobal(element.id, 'audioCtx', new AudioContext());
+        const analyser = setGlobal(element.id, 'analyser', audioCtx.createAnalyser());
 
-        let audioCtx = window.$wave[element.id].audioCtx || new AudioContext();
-        window.$wave[element.id].audioCtx = audioCtx
-
-        let analyser = window.$wave[element.id].analyzer || audioCtx.createAnalyser();
-        window.$wave[element.id].analyser = analyser
-
-        //check if the element has a source already assigned and make sure they point to the same 
-        //reference because React will make a new element with a different reference
-        let source = null;
-        if (window.$wave[element.id].source)
-            if (window.$wave[element.id].source.mediaElement === element)
-                source = window.$wave[element.id].source
-            else
+        let source = getGlobal(element.id, 'source');
+        if (source) {
+            if (source.mediaElement !== element) {
                 source = audioCtx.createMediaElementSource(element);
-        else
+            }
+        } else {
             source = audioCtx.createMediaElementSource(element);
-
-        window.$wave[element.id].source = source
+        }
+        setGlobal(element.id, 'source', source);
 
         //beep test for ios
-        let oscillator = audioCtx.createOscillator();
+        const oscillator = audioCtx.createOscillator();
         oscillator.frequency.value = 1;
         oscillator.connect(audioCtx.destination);
         oscillator.start(0);
@@ -54,13 +63,13 @@ export default function fromElement(element_id, canvas_id, options) {
         source.connect(audioCtx.destination)
 
         analyser.fftsize = 32768;
-        let bufferLength = analyser.frequencyBinCount;
-        let data = new Uint8Array(bufferLength);
+        const bufferLength = analyser.frequencyBinCount;
+        const data = new Uint8Array(bufferLength);
         let frameCount = 1
 
         function renderFrame() {
             //only run one wave visual per canvas
-            if (JSON.stringify(options) != this.activeCanvas[canvas_id]) {
+            if (JSON.stringify(options) !== this.activeCanvas[canvas_id]) {
                 return
             }
 
@@ -95,7 +104,7 @@ export default function fromElement(element_id, canvas_id, options) {
         run.call(waveContext)
     }
 
-    if (this.activated) {
+    if (this.activated || options['skipUserEventsWatcher']) {
         run.call(waveContext)
     } else {
         //wait for a valid user gesture 
