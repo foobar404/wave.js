@@ -1,6 +1,9 @@
 // import { terser } from "rollup-plugin-terser";
 // import babel from '@rollup/plugin-babel';
 
+import resolve from 'rollup-plugin-node-resolve';
+import commonJS from 'rollup-plugin-commonjs'
+
 export default {
     input: "./src/index.js",
     output: [{
@@ -11,21 +14,11 @@ export default {
         file: './dist/bundle.cjs.js',
         format: 'cjs'
     }],
-    // plugins: [babel({
-    //     presets: [
-    //         [
-    //             "@babel/preset-env",
-    //             {
-    //                 "targets": {
-    //                     "browsers": [
-    //                         "safari 6",
-    //                         "cover 99.5%"
-    //                     ]
-    //                 },
-    //                 debug: false
-    //             }
-    //         ]
-    //     ]
-    // }), terser()]
+    plugins: [
+        resolve(),
+        commonJS({
+            include: 'node_modules/**'
+        })
+    ]
 }
 

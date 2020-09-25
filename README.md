@@ -1,4 +1,4 @@
-# [Wave.js](https://foobar404.github.io/Wave.js/#/) ![version](https://img.shields.io/badge/version-1.2.4-purple.svg)
+# [Wave.js](https://foobar404.github.io/Wave.js/#/)
 
 Audio visualizer library for javascript
 (20+ designs).

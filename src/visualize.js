@@ -19,18 +19,19 @@ import drawFireworks from "./visuals/drawFireworks.js"
 import drawStatic from "./visuals/drawStatic.js"
 import drawWeb from "./visuals/drawWeb.js"
 import drawStitches from "./visuals/drawStitches.js"
+import drawRoundLayers from "./visuals/drawRoundLayers.js"
 
 //options:type,colors,stroke
-export default function visualize(data, canvas, options = {}, frame) {
+export default function visualize(data, canvasId, options = {}, frame) {
     //make a clone of options
     options = { ...options }
     //options
     if (!options.stroke) options.stroke = 1;
     if (!options.colors) options.colors = ["#d92027", "#ff9234", "#ffcd3c", "#35d0ba"];
 
-    if (typeof canvas == "string") {
-        canvas = document.getElementById(canvas);
-    }
+
+    let canvas = document.getElementById(canvasId);
+
     if (!canvas) return;
 
     let ctx = canvas.getContext("2d");
@@ -55,6 +56,7 @@ export default function visualize(data, canvas, options = {}, frame) {
         "orbs": drawOrbs,
         "ring": drawRing,
         "rings": drawRings,
+        "round layers": drawRoundLayers,
         "round wave": drawRoundWave,
         "shine": drawShine,
         "shine rings": drawShineRings,
@@ -78,6 +80,7 @@ export default function visualize(data, canvas, options = {}, frame) {
         "flower blocks": 1,
         "ring": 1,
         "rings": 1,
+        "round layers": 1,
         "round wave": 1,
         "orbs": 1,
         "shine": 1,
@@ -91,7 +94,7 @@ export default function visualize(data, canvas, options = {}, frame) {
     }
 
     const functionContext = {
-        data, options, ctx, h, w, Helper: this.Helper
+        data, options, ctx, h, w, Helper: this.Helper, canvasId
     }
 
     if (typeof options.type == "string") options.type = [options.type]

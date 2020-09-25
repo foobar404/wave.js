@@ -1,6 +1,6 @@
 {
   "name": "@foobar404/wave",
-  "version": "1.2.4",
+  "version": "1.2.6",
   "description": "Audio visualizer library for javascript (20+ designs).",
   "main": "dist/bundle.cjs.js",
   "directories": {
@@ -25,7 +25,7 @@
   "files": [
     "dist/bundle.cjs.js"
   ],
-  "homepage": "https://github.com/foobar404/Wave.js",
+  "homepage": "https://foobar404.github.io/Wave.js/#/",
   "repository": {
     "type": "git",
     "url": "https://github.com/foobar404/Wave.js.git"
@@ -37,9 +37,11 @@
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "@rollup/plugin-babel": "^5.0.4",
-    "rollup-plugin-terser": "^6.1.0"
-  },
-  "dependencies": {
+    "origamijs": "^0.5.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^6.1.0",
     "watch": "^1.0.2"
-  }
+  },
+  "dependencies": {}
 }
