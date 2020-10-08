@@ -1,7 +1,7 @@
 {
-  "name": "@foobar404/wave",
-  "version": "1.2.6",
-  "description": "Audio visualizer library for javascript (20+ designs).",
+  "name": "wave-visualizer",
+  "version": "1.0.0",
+  "description": "Audio visualizer library for javascript",
   "main": "dist/bundle.cjs.js",
   "directories": {
     "test": "test"
@@ -20,7 +20,7 @@
     "music",
     "canvas"
   ],
-  "author": "Austin Michaud",
+  "author": "Samuvel Johnson",
   "license": "MIT",
   "files": [
     "dist/bundle.cjs.js"
@@ -28,10 +28,10 @@
   "homepage": "https://foobar404.github.io/Wave.js/#/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/foobar404/Wave.js.git"
+    "url": "https://github.com/samuveljohns/Wave.js.git"
   },
   "bugs": {
-    "url": "https://github.com/foobar404/Wave.js/issues"
+    "url": "https://github.com/samuveljohns/Wave.js.git/issues"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
