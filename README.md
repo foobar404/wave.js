@@ -1,25 +1,20 @@
 # [Wave.js](https://foobar404.github.io/Wave.js/#/)
 
-Audio visualizer library for javascript
-(20+ designs).
+Minimal wave visualizer for javascript from wave.js
+Visual audio from element or micro phone stream
+
+![Wave visulaizer](wave-visualizer.png)
 
 [DOCUMENTATION](https://foobar404.github.io/Wave.js/#/docs)
 
 [LIVE EXAMPLES](https://foobar404.github.io/Wave.js/#/)
 
+# Installation
 
-# Installation 
- 
-<h3>Install With CDN</h3>
-
-```html
-<script src="https://cdn.jsdelivr.net/gh/foobar404/wave.js/dist/bundle.iife.js"></script>
-```
-
-<h3>Or NPM</h3>
+<h3>Install with NPM</h3>
 
 ```html
-npm i @foobar404/wave
+npm i wave-visualizer
 ```
 
 # Setup
@@ -27,7 +22,7 @@ npm i @foobar404/wave
 <p>If your using npm use a default import to include wave.</p>
 
 ```javascript
-import Wave from "@foobar404/wave"
+import Wave from 'wave-visualizer';
 ```
 
 <p>Create a new wave object.</p>
@@ -36,19 +31,18 @@ import Wave from "@foobar404/wave"
 var wave = new Wave();
 ```
 
-<p>If your working with React, put the wave instance in state.</p>  
+<p>If your working with React, put the wave instance in state.</p>
 
 ```javascript
 let [wave] = useState(new Wave());
 ```
-
 
 # Usage
 
 <p>Call one of the three main function on the wave object, fromFile, fromStream, fromElement.</p>
 
 ```javascript
-wave.fromElement("audio_element_id","canvas_id",{type:"wave"});
+wave.fromElement('audio_element_id', 'canvas_id', { type: 'wave' });
 ```
 
 # Documentation
@@ -59,32 +53,29 @@ wave.fromElement("audio_element_id","canvas_id",{type:"wave"});
 
 ```html
 <html>
+  <head></head>
 
-<head></head>
+  <body>
+    <canvas id="output" height="500" width="500"></canvas>
 
-<body>
-
-   <canvas id="output" height="500" width="500"></canvas>
-
-   <script src="https://cdn.jsdelivr.net/gh/PiethonCoder/wave.js/wave.js"></script>
-   <script>
+    <script src="../dist/bundle.cjs.js"></script>
+    <script>
       let wave = new Wave();
 
-      navigator.mediaDevices.getUserMedia({
-            audio: true
-         })
-         .then(function (stream) {
-            wave.fromStream(stream, "output", {
-               type: "shine",
-               colors: ["red", "white", "blue"]
-            });
-         })
-         .catch(function (err) {
-            console.log(err.message)
-         });
-   </script>
-</body>
-
+      navigator.mediaDevices
+        .getUserMedia({
+          audio: true,
+        })
+        .then(function (stream) {
+          wave.fromStream(stream, 'output', {
+            colors: ['red', 'white', 'blue'],
+          });
+        })
+        .catch(function (err) {
+          console.log(err.message);
+        });
+    </script>
+  </body>
 </html>
 ```
 
