@@ -42,7 +42,7 @@ let [wave] = useState(new Wave());
 <p>Call one of the three main function on the wave object, fromFile, fromStream, fromElement.</p>
 
 ```javascript
-wave.fromElement('audio_element_id', 'canvas_id', { type: 'wave' });
+wave.fromElement('audio_element_id', 'canvas_id');
 ```
 
 # Documentation
