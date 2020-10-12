@@ -240,8 +240,6 @@ function fromStream(stream, canvas_id, options = {}) {
 
         source = audioCtx.createMediaStreamSource(stream);
         source.connect(analyser);
-        source.connect(audioCtx.destination); //playback audio
-
         this.sources[stream.toString()] = {
             "audioCtx": audioCtx,
             "analyser": analyser,

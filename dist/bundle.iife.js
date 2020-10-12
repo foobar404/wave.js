@@ -241,8 +241,6 @@ var Wave = (function () {
 
           source = audioCtx.createMediaStreamSource(stream);
           source.connect(analyser);
-          source.connect(audioCtx.destination); //playback audio
-
           this.sources[stream.toString()] = {
               "audioCtx": audioCtx,
               "analyser": analyser,
