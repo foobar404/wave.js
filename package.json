@@ -1,6 +1,6 @@
 {
   "name": "wave-visualizer",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "Audio visualizer library for javascript",
   "main": "dist/bundle.cjs.js",
   "directories": {
