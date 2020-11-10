@@ -66,7 +66,7 @@ wave.fromElement("audio_element_id","canvas_id",{type:"wave"});
 
    <canvas id="output" height="500" width="500"></canvas>
 
-   <script src="https://cdn.jsdelivr.net/gh/PiethonCoder/wave.js/wave.js"></script>
+   <script src="https://cdn.jsdelivr.net/gh/foobar404/wave.js/dist/bundle.iife.js"></script>
    <script>
       let wave = new Wave();
 
