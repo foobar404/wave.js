@@ -5,7 +5,7 @@ function fromStream(stream, canvas_id, options = {}) {
 
     let audioCtx, analyser, source;
     if (!this.sources[stream.toString()]) {
-        audioCtx = new AudioContext();
+        audioCtx = options.context || new AudioContext();
         analyser = audioCtx.createAnalyser();
 
         source = audioCtx.createMediaStreamSource(stream);
