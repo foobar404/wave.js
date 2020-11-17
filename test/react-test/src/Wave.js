@@ -7,7 +7,7 @@ export default () => {
     let canvas = document.querySelector('canvas');
 
     let wave = new Wave();
-    wave.fromElement(audio, canvas, { type: 'star' });
+    wave.fromElement(audio, canvas, { type: 'star', context: new AudioContext() });
   }, []);
   return (
     <div>

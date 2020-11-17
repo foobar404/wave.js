@@ -134,9 +134,11 @@
             audio: true,
           })
           .then(function (stream) {
+            wave.source = {};
             wave.fromStream(stream, id, {
               colors: ['#42BABD', '#42BABD'],
               stroke: 1,
+              context: new AudioContext(), // optional
             });
           })
           .catch(function (err) {
