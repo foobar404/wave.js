@@ -1,6 +1,6 @@
 {
   "name": "@foobar404/wave",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Audio visualizer library for javascript (20+ designs).",
   "main": "dist/bundle.cjs.js",
   "directories": {

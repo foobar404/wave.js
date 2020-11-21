@@ -1,5 +1,10 @@
-export default function fromElement(element_id, canvas_id, options) {
-    const globalAccessKey = [options.globalAccessKey || '$wave'];
+export default function fromElement(element_id, canvas_id, userOptions = {}) {
+    const options = {
+        autoConnect: true,
+        globalAccessKey: '$wave',
+        ...userOptions,
+    };
+    const { globalAccessKey } = options;
     const initGlobalObject = (elementId) => {
         window[globalAccessKey] = window[globalAccessKey] || {};
         window[globalAccessKey][elementId] = window[globalAccessKey][elementId] || {};
@@ -11,7 +16,7 @@ export default function fromElement(element_id, canvas_id, options) {
     };
 
     const setGlobal = options['setGlobal'] || function(elementId, accessKey, value) {
-        let returnValue = getGlobal(elementId);
+        let returnValue = getGlobal(elementId, accessKey);
         if(!returnValue) {
             window[globalAccessKey][elementId][accessKey] = window[globalAccessKey][elementId][accessKey] || value;
             returnValue = window[globalAccessKey][elementId][accessKey];
@@ -26,18 +31,18 @@ export default function fromElement(element_id, canvas_id, options) {
 
     function run() {
         //user gesture has happened
-        this.activated = true
+        this.activated = true;
 
         //track current wave for canvas
-        this.activeCanvas = this.activeCanvas || {}
-        this.activeCanvas[canvas_id] = JSON.stringify(options)
+        this.activeCanvas = this.activeCanvas || {};
+        this.activeCanvas[canvas_id] = JSON.stringify(options);
 
         //track elements used so multiple elements use the same data
-        this.activeElements[element_id] = this.activeElements[element_id] || {}
-        if (this.activeElements[element_id].count) this.activeElements[element_id].count += 1
-        else this.activeElements[element_id].count = 1
+        this.activeElements[element_id] = this.activeElements[element_id] || {};
+        if (this.activeElements[element_id].count) this.activeElements[element_id].count += 1;
+        else this.activeElements[element_id].count = 1;
 
-        const currentCount = this.activeElements[element_id].count
+        const currentCount = this.activeElements[element_id].count;
 
         const audioCtx = setGlobal(element.id, 'audioCtx', new AudioContext());
         const analyser = setGlobal(element.id, 'analyser', audioCtx.createAnalyser());
@@ -59,13 +64,15 @@ export default function fromElement(element_id, canvas_id, options) {
         oscillator.start(0);
         oscillator.stop(0);
 
-        source.connect(analyser)
-        source.connect(audioCtx.destination)
+        source.connect(analyser);
+        if (options.autoConnect) {
+            source.connect(audioCtx.destination);
+        }
 
         analyser.fftsize = 32768;
         const bufferLength = analyser.frequencyBinCount;
         const data = new Uint8Array(bufferLength);
-        let frameCount = 1
+        let frameCount = 1;
 
         function renderFrame() {
             //only run one wave visual per canvas
@@ -78,18 +85,18 @@ export default function fromElement(element_id, canvas_id, options) {
                 return
 
             requestAnimationFrame(renderFrame);
-            frameCount++
+            frameCount++;
 
-            //check if this element is the last to be called 
+            //check if this element is the last to be called
             if (!(currentCount < this.activeElements[element_id].count)) {
                 analyser.getByteFrequencyData(data);
-                this.activeElements[element_id].data = data
+                this.activeElements[element_id].data = data;
             }
 
             this.visualize(this.activeElements[element_id].data, canvas_id, options, frameCount);
         }
 
-        renderFrame = renderFrame.bind(this)
+        renderFrame = renderFrame.bind(this);
         renderFrame();
 
     }
@@ -98,22 +105,22 @@ export default function fromElement(element_id, canvas_id, options) {
     const create = () => {
         //remove all events
         ["touchstart", "touchmove", "touchend", "mouseup", "click", "play"].forEach(event => {
-            element.removeEventListener(event, create, { once: true })
-        })
+            element.removeEventListener(event, create, { once: true });
+        });
 
-        run.call(waveContext)
-    }
+        run.call(waveContext);
+    };
 
     if (this.activated || options['skipUserEventsWatcher']) {
-        run.call(waveContext)
+        run.call(waveContext);
     } else {
-        //wait for a valid user gesture 
-        document.body.addEventListener("touchstart", create, { once: true })
-        document.body.addEventListener("touchmove", create, { once: true })
-        document.body.addEventListener("touchend", create, { once: true })
-        document.body.addEventListener("mouseup", create, { once: true })
-        document.body.addEventListener("click", create, { once: true })
-        element.addEventListener("play", create, { once: true })
+        //wait for a valid user gesture
+        document.body.addEventListener("touchstart", create, { once: true });
+        document.body.addEventListener("touchmove", create, { once: true });
+        document.body.addEventListener("touchend", create, { once: true });
+        document.body.addEventListener("mouseup", create, { once: true });
+        document.body.addEventListener("click", create, { once: true });
+        element.addEventListener("play", create, { once: true });
     }
 
 

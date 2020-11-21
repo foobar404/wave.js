@@ -1,8 +1,13 @@
 var Wave = (function () {
     'use strict';
 
-    function fromElement(element_id, canvas_id, options) {
-        const globalAccessKey = [options.globalAccessKey || '$wave'];
+    function fromElement(element_id, canvas_id, userOptions = {}) {
+        const options = {
+            autoConnect: true,
+            globalAccessKey: '$wave',
+            ...userOptions,
+        };
+        const { globalAccessKey } = options;
         const initGlobalObject = (elementId) => {
             window[globalAccessKey] = window[globalAccessKey] || {};
             window[globalAccessKey][elementId] = window[globalAccessKey][elementId] || {};
@@ -14,7 +19,7 @@ var Wave = (function () {
         };
 
         const setGlobal = options['setGlobal'] || function(elementId, accessKey, value) {
-            let returnValue = getGlobal(elementId);
+            let returnValue = getGlobal(elementId, accessKey);
             if(!returnValue) {
                 window[globalAccessKey][elementId][accessKey] = window[globalAccessKey][elementId][accessKey] || value;
                 returnValue = window[globalAccessKey][elementId][accessKey];
@@ -63,7 +68,9 @@ var Wave = (function () {
             oscillator.stop(0);
 
             source.connect(analyser);
-            source.connect(audioCtx.destination);
+            if (options.autoConnect) {
+                source.connect(audioCtx.destination);
+            }
 
             analyser.fftsize = 32768;
             const bufferLength = analyser.frequencyBinCount;
@@ -83,7 +90,7 @@ var Wave = (function () {
                 requestAnimationFrame(renderFrame);
                 frameCount++;
 
-                //check if this element is the last to be called 
+                //check if this element is the last to be called
                 if (!(currentCount < this.activeElements[element_id].count)) {
                     analyser.getByteFrequencyData(data);
                     this.activeElements[element_id].data = data;
@@ -110,7 +117,7 @@ var Wave = (function () {
         if (this.activated || options['skipUserEventsWatcher']) {
             run.call(waveContext);
         } else {
-            //wait for a valid user gesture 
+            //wait for a valid user gesture
             document.body.addEventListener("touchstart", create, { once: true });
             document.body.addEventListener("touchmove", create, { once: true });
             document.body.addEventListener("touchend", create, { once: true });
