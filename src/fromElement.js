@@ -11,7 +11,7 @@ export default function fromElement(element_id, canvas_id, options) {
     };
 
     const setGlobal = options['setGlobal'] || function(elementId, accessKey, value) {
-        let returnValue = getGlobal(elementId);
+        let returnValue = getGlobal(elementId, accessKey);
         if(!returnValue) {
             window[globalAccessKey][elementId][accessKey] = window[globalAccessKey][elementId][accessKey] || value;
             returnValue = window[globalAccessKey][elementId][accessKey];
