@@ -1,4 +1,4 @@
-function fromStream(stream, canvas_id, options = {}) {
+function fromStream(stream, canvas_id, options = {}, connectDestination=true) {
 
     this.current_stream.id = canvas_id;
     this.current_stream.options = options;
@@ -10,6 +10,11 @@ function fromStream(stream, canvas_id, options = {}) {
 
         source = audioCtx.createMediaStreamSource(stream);
         source.connect(analyser);
+
+        if (connectDestination) {
+            source.connect(audioCtx.destination); //playback audio
+        }
+
         this.sources[stream.toString()] = {
             "audioCtx": audioCtx,
             "analyser": analyser,
@@ -27,13 +32,15 @@ function fromStream(stream, canvas_id, options = {}) {
     this.current_stream.data = new Uint8Array(bufferLength);
 
     let self = this;
+    let frameCount = 1
 
     function renderFrame() {
         self.current_stream.animation = requestAnimationFrame(self.current_stream.loop);
+        frameCount++;
         self.sources[stream.toString()].animation = self.current_stream.animation;
         analyser.getByteFrequencyData(self.current_stream.data);
 
-        self.visualize(self.current_stream.data, self.current_stream.id, self.current_stream.options);
+        self.visualize(self.current_stream.data, self.current_stream.id, self.current_stream.options, frameCount);
     }
 
     this.current_stream.loop = renderFrame;

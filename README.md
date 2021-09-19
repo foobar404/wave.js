@@ -57,9 +57,6 @@ wave.fromElement('audio_element_id', 'canvas_id');
 
   <body>
     <canvas id="output" height="500" width="500"></canvas>
-
-    <script src="../dist/bundle.cjs.js"></script>
-    <script>
       let wave = new Wave();
 
       navigator.mediaDevices

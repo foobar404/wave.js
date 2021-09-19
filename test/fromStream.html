@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            margin-top: 100px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .container {
+            width: 25%;
+            height: auto;
+            display: inline-block;
+            position: relative;
+        }
+
+        .name {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+            background: white;
+        }
+
+        .container:hover .name {
+            display: block;
+        }
+
+        canvas {
+            width: 100%;
+            border: 1px solid black;
+            box-sizing: border-box;
+        }
+
+        #mainCanvas {
+            height: 80%;
+            width: 80%;
+            display: none;
+        }
+
+        .show {
+            display: block !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <label>Select visualization:</label>
+    <select id="visuals"></select>
+    <canvas id="mainCanvas"></canvas>
+    <script src="../dist/bundle.iife.js"></script>
+    <script>
+        const wave = new Wave()
+        let mediaStream = null;
+        let visuals = ["bars", "bars blocks", "big bars", "cubes", "dualbars", "dualbars blocks", "fireworks", "flower",
+            "flower blocks", "orbs", "ring", "rings", "round layers", "round wave", "shine", "shine rings",
+            "shockwave", "star",
+            "static", "stitches", "web", "wave"
+        ]
+        let visualSelector = document.getElementById("visuals")
+        visuals.forEach((visual) => {
+            let option = document.createElement("option")
+            option.value = visual
+            option.innerText = visual
+            visualSelector.appendChild(option)
+        })
+        visualSelector.onchange = function() {
+            if (mediaStream == null) {
+                mainCanvas.classList.add("show")
+                mainCanvas.height = window.innerHeight * .8
+                mainCanvas.width = window.innerWidth * .8
+
+                navigator.mediaDevices.getUserMedia({
+                    audio: true
+                })
+                .then(function (stream) {
+                    mediaStream = stream
+                    wave.fromStream(mediaStream, "mainCanvas", { type: visualSelector.options[visualSelector.selectedIndex].value }, false)
+                })
+                .catch(function (err) {
+                    console.log(err.message)
+                })
+            } else {
+                wave.fromStream(mediaStream, "mainCanvas", { type: visualSelector.options[visualSelector.selectedIndex].value }, false)
+            }
+        }
+
+        let mainCanvas = document.getElementById("mainCanvas")
+
+        mainCanvas.onclick = () => {
+            visualSelector.selectedIndex++
+        }
+
+    </script>
+</body>
+
+</html>
