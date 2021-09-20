@@ -212,7 +212,7 @@ function fromFile(file, options = {}) {
 
 }
 
-function fromStream(stream, canvas_id, options = {}) {
+function fromStream(stream, canvas_id, options = {}, connectDestination=true) {
 
     this.current_stream.id = canvas_id;
     this.current_stream.options = options;
@@ -224,8 +224,10 @@ function fromStream(stream, canvas_id, options = {}) {
 
         source = audioCtx.createMediaStreamSource(stream);
         source.connect(analyser);
-        source.connect(audioCtx.destination); //playback audio
-
+        if (connectDestination) {
+            source.connect(audioCtx.destination); //playback audio
+        }
+        
         this.sources[stream.toString()] = {
             "audioCtx": audioCtx,
             "analyser": analyser,
@@ -243,13 +245,15 @@ function fromStream(stream, canvas_id, options = {}) {
     this.current_stream.data = new Uint8Array(bufferLength);
 
     let self = this;
+    let frameCount = 1;
 
     function renderFrame() {
         self.current_stream.animation = requestAnimationFrame(self.current_stream.loop);
+        frameCount++;
         self.sources[stream.toString()].animation = self.current_stream.animation;
         analyser.getByteFrequencyData(self.current_stream.data);
 
-        self.visualize(self.current_stream.data, self.current_stream.id, self.current_stream.options);
+        self.visualize(self.current_stream.data, self.current_stream.id, self.current_stream.options, frameCount);
     }
 
     this.current_stream.loop = renderFrame;
@@ -1714,10 +1718,10 @@ Origami.sprite = function(x, y, properties) {
   if (!properties || !properties.src)
     return this;
 
-  var image = new Image(),
-    frames = (properties.frames || 0),
-    loop = (properties.loop || true),
-    speed = (properties.speed || 10);
+  var image = new Image();
+    (properties.frames || 0);
+    (properties.loop || true);
+    (properties.speed || 10);
 
   image.src = properties.src;
 
@@ -2052,12 +2056,12 @@ Origami.on = function(ev, fn) {
 var factory = extend(Origami.init.bind(this), Origami);
 
 // For consistency with CommonJS environments' exports
-if (  module && module.exports ){
+if ( module && module.exports ){
     module.exports = factory;
 }
 
 // For CommonJS with exports, but without module.exports, like Rhino
-else if (  exports ) {
+else if ( exports ) {
     exports.origami = factory;
 }
 
@@ -2071,11 +2075,11 @@ else if ( typeof window === "object" ) {
     return this;
 })() ));
 });
-var origami_2 = origami_1.origami;
+origami_1.origami;
 
 var drawRoundLayers = (functionContext) => {
     let { data, options, ctx, h, w, Helper, canvasId } = functionContext;
-    let helper = new Helper(ctx);
+    new Helper(ctx);
 
     let origamiContext = {};
     let origami = origami_1.bind(origamiContext);

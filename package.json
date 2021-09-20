@@ -43,5 +43,7 @@
     "rollup-plugin-terser": "^6.1.0",
     "watch": "^1.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "server": "^1.0.36"
+  }
 }
