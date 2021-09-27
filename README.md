@@ -3,9 +3,9 @@
 Audio visualizer library for javascript
 (20+ designs).
 
-[DOCUMENTATION](https://foobar404.github.io/Wave.js/#/docs)
+[Documentation](https://foobar404.github.io/Wave.js/#/docs)
 
-[LIVE EXAMPLES](https://foobar404.github.io/Wave.js/#/)
+[View live website](https://foobar404.github.io/Wave.js/#/)
 
 
 # Installation 
