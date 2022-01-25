@@ -1,3 +1,6 @@
+❗Wave.js 2.0.0 is underway. The library has recieved a good amount of attention, so I have decided to revisit, and expand on the wave.js library. Im currently doing a complete rewite of the library. If you have any neat ideas for feature requests, please leave a comment under the <b>Wave.js version 2.0.0 feature requests</b> post in the <b>Discussions</b> section.❗
+
+
 # [Wave.js](https://foobar404.github.io/Wave.js/#/)
 
 Audio visualizer library for javascript
