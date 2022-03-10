@@ -1,6 +1,6 @@
 {
   "name": "@foobar404/wave",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Audio visualizer library for javascript (20+ designs).",
   "main": "dist/bundle.cjs.js",
   "directories": {
@@ -9,8 +9,7 @@
   "scripts": {
     "test": "npx npm-run-all --parallel server watch",
     "server": "npx http-server ./ -o ./test/index.html -c-1",
-    "build": "npx rollup -c",
-    "watch": "npx watch \"npm run build\" ./src"
+    "watch": "rollup -c -w"
   },
   "keywords": [
     "audio",
@@ -38,10 +37,11 @@
     "@babel/preset-env": "^7.10.4",
     "@rollup/plugin-babel": "^5.0.4",
     "origamijs": "^0.5.1",
+    "rollup": "^2.70.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^6.1.0",
-    "watch": "^1.0.2"
+    "rollup-watch": "^4.3.1"
   },
   "dependencies": {}
 }

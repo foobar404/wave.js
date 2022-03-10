@@ -31,13 +31,13 @@ function fromStream(stream, canvas_id, options = {}, connectDestination=true) {
     this.current_stream.data = new Uint8Array(bufferLength);
 
     let self = this;
-    let frameCount = 1
+    let frameCount = 1;
 
     function renderFrame() {
         self.current_stream.animation = requestAnimationFrame(self.current_stream.loop);
         frameCount++;
         self.sources[stream.toString()].animation = self.current_stream.animation;
-        analyser.getByteFrequencyData(self.current_stream.data);
+        analyser.getByteFrequencyData(self.current_stream.data);  
 
         self.visualize(self.current_stream.data, self.current_stream.id, self.current_stream.options, frameCount);
     }
