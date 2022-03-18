@@ -20,7 +20,7 @@
     "typescript": "^4.6.2",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://goobar404.github.io/wave.js",
+  "homepage": "https://foobar404.github.io/Wave.js/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
