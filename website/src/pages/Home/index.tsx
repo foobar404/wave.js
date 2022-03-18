@@ -184,10 +184,10 @@ export function Home() {
 
         <section className={"__display"}>
             <nav className={"__nav"}>
-                <a href="#/"
+                <a href="./#/"
                     className={`c-link __nav-item ${activeTab == 0 ? '--active' : ''}`}
                     onClick={() => setActiveTab(0)}>Home</a>
-                <a href="/docs"
+                <a href="./docs"
                     className={`c-link __nav-item ${activeTab == 1 ? '--active' : ''}`}
                     onClick={() => setActiveTab(1)}
                     target={"_blank"}>Docs</a>
