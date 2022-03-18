@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/wave.js/static/css/main.be7499b8.css",
+    "main.js": "/wave.js/static/js/main.0a138078.js",
+    "index.html": "/wave.js/index.html",
+    "main.be7499b8.css.map": "/wave.js/static/css/main.be7499b8.css.map",
+    "main.0a138078.js.map": "/wave.js/static/js/main.0a138078.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.be7499b8.css",
+    "static/js/main.0a138078.js"
+  ]
+}
