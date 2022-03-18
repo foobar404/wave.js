@@ -1,0 +1,16 @@
+﻿.c-link {
+    color: white;
+    text-decoration: none;
+
+    &:hover {
+        color: $color-secondary;
+    }
+
+    &:active {
+        color: $color-primary;
+    }
+
+    &.--active {
+        color: $color-primary;
+    }
+}

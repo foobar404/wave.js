@@ -1,0 +1,44 @@
+{
+  "name": "@foobar404/wave",
+  "version": "2.0.0",
+  "description": "Audio visualizer library for javascript.",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "start": "webpack",
+    "docs": "typedoc"
+  },
+  "keywords": [
+    "audio",
+    "visualizer",
+    "wave",
+    "sound",
+    "music",
+    "canvas"
+  ],
+  "typings": "./dist/src/index.d.ts",
+  "types": "./dist/src/index.d.ts",
+  "author": "Austin Michaud",
+  "license": "MIT",
+  "files": [
+    "/dist"
+  ],
+  "homepage": "https://foobar404.github.io/Wave.js/#/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/foobar404/Wave.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/foobar404/Wave.js/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
+    "ts-loader": "^9.2.8",
+    "typedoc": "^0.22.13",
+    "typedoc-plugin-inline-sources": "^1.0.1",
+    "typedoc-plugin-missing-exports": "^0.22.6",
+    "typescript": "^4.6.2",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+    "entryPoints": "./src/index.ts",
+    "out": "./docs",
+    "excludeExternals": true,
+    "internalNamespace": "Animations",
+    "readme": "./README.md",
+    "githubPages": true,
+    "externalPattern": "**/node_modules/**"
+}

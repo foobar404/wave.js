@@ -1,0 +1,30 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap');
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: url(https://demos.creative-tim.com/vision-ui-dashboard-react/static/media/body-background.7d7d88a8.png) 0 0 / cover;
+}
+
+* {
+  font-family: 'Kanit', sans-serif;
+}
+
+*::-webkit-scrollbar{
+  height: 10px;
+  width: 10px;
+}
+
+*::-webkit-scrollbar-thumb{
+  background: $color-primary;
+  border-radius: $radius;
+}
+
+.makeStyles-root-39{
+  background: $color-primary !important;
+}
