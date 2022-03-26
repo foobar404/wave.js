@@ -1,6 +1,6 @@
 {
   "name": "@foobar404/wave",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Audio visualizer library for javascript.",
   "main": "dist/bundle.js",
   "scripts": {

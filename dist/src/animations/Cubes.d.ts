@@ -6,6 +6,7 @@ interface ICubesOptions extends IRectangleOptions {
     count?: number;
     cubeHeight?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
+    gap?: number;
     top?: boolean;
     right?: boolean;
     bottom?: boolean;

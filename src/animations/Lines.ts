@@ -38,20 +38,21 @@ export class Lines implements IAnimation {
             ...this._options
         };
 
-        if (this._options?.frequencyBand) audioBufferData = audioData.getFrequencyBands()[this._options?.frequencyBand];
+        if (this._options.frequencyBand) audioData.setFrequencyBand(this._options.frequencyBand);
+        audioData.scaleData(Math.min(width, height));
 
         if (this._options?.mirroredX) {
             let n = 1;
-            for (let i = Math.ceil(audioBufferData.length / 2); i < audioBufferData.length; i++) {
-                audioBufferData[i] = audioBufferData[Math.ceil(audioBufferData.length / 2) - n];
+            for (let i = Math.ceil(audioData.data.length / 2); i < audioData.data.length; i++) {
+                audioData.data[i] = audioData.data[Math.ceil(audioData.data.length / 2) - n];
                 n++;
             }
         }
 
         if (this._options?.top) {
             for (let i = 1; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
 
                 let fromX = (width / this._options.count) * i;
                 let fromY = 0;
@@ -64,8 +65,8 @@ export class Lines implements IAnimation {
 
         if (this._options?.right) {
             for (let i = 1; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
 
                 let fromX = width;
                 let fromY = (height / this._options.count) * i;
@@ -78,8 +79,8 @@ export class Lines implements IAnimation {
 
         if (this._options?.bottom || (!this._options?.top && !this._options?.right && !this._options?.left && !this._options?.center)) {
             for (let i = 1; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
 
                 let fromX = (width / this._options.count) * i;
                 let fromY = height;
@@ -92,8 +93,8 @@ export class Lines implements IAnimation {
 
         if (this._options?.left) {
             for (let i = 1; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
 
                 let fromX = 0;
                 let fromY = (height / this._options.count) * i;
@@ -106,8 +107,8 @@ export class Lines implements IAnimation {
 
         if (this._options?.center) {
             for (let i = 1; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
 
                 let fromX = (width / this._options.count) * i;
                 let fromY = height / 2;

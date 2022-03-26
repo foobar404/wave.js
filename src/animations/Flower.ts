@@ -39,11 +39,12 @@ export class Flower implements IAnimation {
         let centerY = height / 2;
         let degrees = (360 / this._options.count);
 
-        if (this._options?.frequencyBand) audioBufferData = audioData.getFrequencyBands()[this._options?.frequencyBand];
+        if (this._options.frequencyBand) audioData.setFrequencyBand(this._options.frequencyBand);
+        audioData.scaleData(Math.min(width, height));
 
         for (let i = 0; i < this._options.count; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+            let dataValue = audioData.data[dataIndex];
 
             let radians1 = shapes.toRadians((degrees * i) + this._options.rotate);
             let radians2 = shapes.toRadians((degrees * (i + 1)) + this._options.rotate);

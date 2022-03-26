@@ -36,11 +36,12 @@ export class Square implements IAnimation {
         const centerX = width / 2;
         const centerY = height / 2;
 
-        if (this._options?.frequencyBand) audioBufferData = audioData.getFrequencyBands()[this._options?.frequencyBand];
+        if (this._options.frequencyBand) audioData.setFrequencyBand(this._options.frequencyBand);
+        audioData.scaleData(Math.min(width, height));
 
         for (let i = 0; i < sideLength; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+            let dataValue = audioData.data[dataIndex];
 
             let xIncease = this._options.diameter / sideLength;
             let startX = (centerX - (this._options.diameter / 2)) + (xIncease * i);
@@ -50,8 +51,8 @@ export class Square implements IAnimation {
         }
 
         for (let i = 0; i < sideLength; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * (i * 2);
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * (i * 2);
+            let dataValue = audioData.data[dataIndex];
 
             let yIncease = this._options.diameter / sideLength;
             let startX = centerX + (this._options.diameter / 2);
@@ -61,8 +62,8 @@ export class Square implements IAnimation {
         }
 
         for (let i = 0; i < sideLength; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * (i * 3);
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * (i * 3);
+            let dataValue = audioData.data[dataIndex];
 
             let xIncease = this._options.diameter / sideLength;
             let startX = (centerX - (this._options.diameter / 2)) + (xIncease * i);
@@ -72,8 +73,8 @@ export class Square implements IAnimation {
         }
 
         for (let i = 0; i < sideLength; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * (i * 4);
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * (i * 4);
+            let dataValue = audioData.data[dataIndex];
 
             let yIncease = this._options.diameter / sideLength;
             let startX = centerX - (this._options.diameter / 2);

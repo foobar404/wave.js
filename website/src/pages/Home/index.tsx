@@ -186,22 +186,37 @@ export function Home() {
             <nav className={"__nav"}>
                 <a href="./#/"
                     className={`c-link __nav-item ${activeTab == 0 ? '--active' : ''}`}
-                    onClick={() => setActiveTab(0)}>Home</a>
+                    onClick={() => {
+                        setActiveTab(0);
+                        mixpanel.track('Home');
+                    }}>Home</a>
                 <a href="./docs"
                     className={`c-link __nav-item ${activeTab == 1 ? '--active' : ''}`}
-                    onClick={() => setActiveTab(1)}
+                    onClick={() => {
+                        setActiveTab(1);
+                        mixpanel.track('Docs');
+                    }}
                     target={"_blank"}>Docs</a>
                 <a href="https://github.com/foobar404/Wave.js"
                     className={`c-link __nav-item ${activeTab == 2 ? '--active' : ''}`}
-                    onClick={() => setActiveTab(2)}
+                    onClick={() => {
+                        setActiveTab(2);
+                        mixpanel.track('Github');
+                    }}
                     target={"_blank"}>Github</a>
                 <a href="https://www.npmjs.com/package/@foobar404/wave"
                     className={`c-link __nav-item ${activeTab == 3 ? '--active' : ''}`}
-                    onClick={() => setActiveTab(3)}
+                    onClick={() => {
+                        setActiveTab(3);
+                        mixpanel.track('NPM');
+                    }}
                     target={"_blank"}>NPM</a>
                 <a href="https://github.com/sponsors/foobar404"
                     className={`c-link __nav-item ${activeTab == 4 ? '--active' : ''}`}
-                    onClick={() => setActiveTab(4)}
+                    onClick={() => {
+                        setActiveTab(4);
+                        mixpanel.track('Donate');
+                    }}
                     target="_blank">Donate</a>
             </nav>
             <div className={"__canvas"}>

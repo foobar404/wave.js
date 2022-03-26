@@ -37,11 +37,12 @@ export class Arcs implements IAnimation {
             ...this._options
         }
 
-        if (this._options.frequencyBand) audioBufferData = audioData.getFrequencyBands()[this._options.frequencyBand];
+        if (this._options.frequencyBand) audioData.setFrequencyBand(this._options.frequencyBand);
+        audioData.scaleData(Math.min(width, height));
 
         for (let i = 0; i <= this._options.count / 2; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+            let dataValue = audioData.data[dataIndex];
 
             let centerPoint = ((width - this._options.diameter) / this._options.count) * i;
             let startAngle = 180 - (45 / ((255 / dataValue) / 2));
@@ -51,13 +52,13 @@ export class Arcs implements IAnimation {
             shapes.arc(centerPoint + (diameter2 / 2), centerY, diameter2, startAngle, endAngle, this._options);
         }
 
-        let dataIndex = Math.floor(audioBufferData.length / 2);
-        let dataValue = audioBufferData[dataIndex];
+        let dataIndex = Math.floor(audioData.data.length / 2);
+        let dataValue = audioData.data[dataIndex];
         shapes.circle(centerX, centerY, this._options.diameter * (dataValue / 255), this._options);
 
         for (let i = this._options.count / 2; i <= this._options.count; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+            let dataValue = audioData.data[dataIndex];
 
             let centerPoint = (((width - this._options.diameter) / this._options.count) * i) + this._options.diameter;
             let startAngle = 180 - (45 / ((255 / dataValue) / 2));

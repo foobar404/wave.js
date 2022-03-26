@@ -38,12 +38,13 @@ export class Wave implements IAnimation {
             ...this._options
         };
 
-        if (this._options.frequencyBand) audioBufferData = audioData.getFrequencyBands()[this._options.frequencyBand];
+        if (this._options.frequencyBand) audioData.setFrequencyBand(this._options.frequencyBand);
+        audioData.scaleData(Math.min(width, height));
 
         if (this._options.mirroredX) {
             let n = 1;
-            for (let i = Math.ceil(audioBufferData.length / 2); i < audioBufferData.length; i++) {
-                audioBufferData[i] = audioBufferData[Math.ceil(audioBufferData.length / 2) - n];
+            for (let i = Math.ceil(audioData.data.length / 2); i < audioData.data.length; i++) {
+                audioData.data[i] = audioData.data[Math.ceil(audioData.data.length / 2) - n];
                 n++;
             }
         }
@@ -51,8 +52,8 @@ export class Wave implements IAnimation {
         if (this._options.top) {
             let points: { x: number, y: number }[] = [{ x: 0, y: 0 }];
             for (let i = 0; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
                 points.push({
                     x: Math.floor(width / this._options.count) * i,
                     y: dataValue
@@ -65,8 +66,8 @@ export class Wave implements IAnimation {
         if (this._options.right) {
             let points: { x: number, y: number }[] = [{ x: width, y: 0 }];
             for (let i = 0; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
                 points.push({
                     x: width - dataValue,
                     y: Math.floor(width / this._options.count) * i
@@ -79,8 +80,8 @@ export class Wave implements IAnimation {
         if (this._options.bottom || (!this._options.top && !this._options.right && !this._options.left && !this._options.center)) {
             let points: { x: number, y: number }[] = [{ x: 0, y: height }];
             for (let i = 0; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
                 points.push({
                     x: Math.floor(width / this._options.count) * i,
                     y: height - dataValue
@@ -93,8 +94,8 @@ export class Wave implements IAnimation {
         if (this._options.left) {
             let points: { x: number, y: number }[] = [{ x: 0, y: 0 }];
             for (let i = 0; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
                 points.push({
                     x: dataValue,
                     y: Math.floor(width / this._options.count) * i
@@ -107,8 +108,8 @@ export class Wave implements IAnimation {
         if (this._options.center) {
             let points: { x: number, y: number }[] = [{ x: 0, y: height / 2 }];
             for (let i = 0; i <= this._options.count; i++) {
-                let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                let dataValue = audioBufferData[dataIndex];
+                let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                let dataValue = audioData.data[dataIndex];
                 points.push({
                     x: Math.floor(width / this._options.count) * i,
                     y: (height / 2) - dataValue
@@ -120,8 +121,8 @@ export class Wave implements IAnimation {
             if (this._options.mirroredY) {
                 points = [{ x: 0, y: height / 2 }];
                 for (let i = 0; i <= this._options.count; i++) {
-                    let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-                    let dataValue = audioBufferData[dataIndex];
+                    let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+                    let dataValue = audioData.data[dataIndex];
                     points.push({
                         x: Math.floor(width / this._options.count) * i,
                         y: (height / 2) + dataValue

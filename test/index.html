@@ -18,8 +18,8 @@
 </head>
 
 <body>
-    <canvas></canvas>
-    <audio src="./audio.mp3" controls style="position: fixed;top: 20px;left: 20px;"></audio>
+    <canvas height="200" width="200"></canvas>
+    <audio src="./audio.mp3" controls style="position: fixed;right: 0px;"></audio>
 
     <script>
         let canvas = document.querySelector("canvas");
@@ -29,7 +29,7 @@
         canvas.height = window.innerHeight - 30;
         canvas.width = window.innerWidth - 30;
 
-        wave.addAnimation(new wave.animations.Arcs());
+        wave.addAnimation(new wave.animations.Cubes());
     </script>
 </body>
 

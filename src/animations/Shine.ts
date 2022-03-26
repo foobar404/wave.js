@@ -11,6 +11,7 @@ interface IShineOptions extends ILineOptions {
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
     rotate?: number;
+    offset?: boolean;
 }
 
 /** 
@@ -39,17 +40,19 @@ export class Shine implements IAnimation {
         let centerY = height / 2;
         let degrees = (360 / this._options.count);
 
-        if (this._options.frequencyBand) audioBufferData = audioData.getFrequencyBands()[this._options.frequencyBand];
+        if (this._options.frequencyBand) audioData.setFrequencyBand(this._options.frequencyBand);
+        audioData.scaleData(Math.min(width, height));
 
         for (let i = 0; i < this._options.count; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+            let dataValue = audioData.data[dataIndex];
 
             let radians = shapes.toRadians((degrees * i) + this._options.rotate);
+            let diameter = this._options?.offset ? this._options.diameter - (dataValue / 2) : this._options.diameter;
             let diameter2 = this._options.diameter + dataValue;
 
-            let point1X = (this._options.diameter / 2) * Math.cos(radians) + centerX;
-            let point1Y = (this._options.diameter / 2) * Math.sin(radians) + centerY;
+            let point1X = (diameter / 2) * Math.cos(radians) + centerX;
+            let point1Y = (diameter / 2) * Math.sin(radians) + centerY;
 
             let point2X = (diameter2 / 2) * Math.cos(radians) + centerX;
             let point2Y = (diameter2 / 2) * Math.sin(radians) + centerY;

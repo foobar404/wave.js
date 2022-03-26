@@ -36,11 +36,12 @@ export class Circles implements IAnimation {
             ...this._options
         };
 
-        if (this._options.frequencyBand) audioBufferData = audioData.getFrequencyBands()[this._options.frequencyBand];
+        if (this._options.frequencyBand) audioData.setFrequencyBand(this._options.frequencyBand);
+        audioData.scaleData(Math.min(width, height));
 
         for (let i = 0; i < this._options.count; i++) {
-            let dataIndex = Math.floor(audioBufferData.length / this._options.count) * i;
-            let dataValue = audioBufferData[dataIndex];
+            let dataIndex = Math.floor(audioData.data.length / this._options.count) * i;
+            let dataValue = audioData.data[dataIndex];
 
             shapes.circle(centerX, centerY, this._options.diameter + dataValue, this._options);
         }

@@ -7,6 +7,7 @@ interface IShineOptions extends ILineOptions {
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
     rotate?: number;
+    offset?: boolean;
 }
 /**
  * These are the options for the Shine animation [[IShineOptions]]
