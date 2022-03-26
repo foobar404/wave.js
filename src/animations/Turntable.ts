@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface ITurntableOptions extends IPolygonOptions {
+export interface ITurntableOptions extends IPolygonOptions {
     count?: number;
     cubeHeight?: number;
     diameter?: number;

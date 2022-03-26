@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface IShineOptions extends ILineOptions {
+export interface IShineOptions extends ILineOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
