@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface IFlowerOptions extends IPolygonOptions {
+export interface IFlowerOptions extends IPolygonOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";

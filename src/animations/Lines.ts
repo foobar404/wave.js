@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface ILinesOptions extends ILineOptions {
+export interface ILinesOptions extends ILineOptions {
     count?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
     top?: boolean;

@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface IArcsOptions extends IArcOptions, ICircleOptions {
+export interface IArcsOptions extends IArcOptions, ICircleOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";

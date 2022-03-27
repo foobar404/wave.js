@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface ICubesOptions extends IRectangleOptions {
+export interface ICubesOptions extends IRectangleOptions {
     count?: number;
     cubeHeight?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";

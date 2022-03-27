@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface IGlobOptions extends IPolygonOptions {
+ export interface IGlobOptions extends IPolygonOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";

@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface ICirclesOptions extends ICircleOptions {
+export interface ICirclesOptions extends ICircleOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";

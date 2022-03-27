@@ -6,7 +6,7 @@ import { AudioData } from "../util/AudioData";
 /**
  * @source
  */
-interface IWaveOptions extends IPolygonOptions {
+export interface IWaveOptions extends IPolygonOptions {
     count?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
     top?: boolean;
