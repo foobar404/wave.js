@@ -130,5 +130,6 @@ out
 
 .vscode/
 .idea/
+build/
 node_modules/
 .DS_Store
