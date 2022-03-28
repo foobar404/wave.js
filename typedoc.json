@@ -1,6 +1,6 @@
 {
     "entryPoints": "./src/index.ts",
-    "out": "./docs",
+    "out": "./website/public/docs",
     "excludeExternals": true,
     "internalNamespace": "Animations",
     "readme": "./README.md",
