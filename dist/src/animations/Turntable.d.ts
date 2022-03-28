@@ -2,7 +2,7 @@ import { IPolygonOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface ITurntableOptions extends IPolygonOptions {
+export interface ITurntableOptions extends IPolygonOptions {
     count?: number;
     cubeHeight?: number;
     diameter?: number;
@@ -18,4 +18,3 @@ export declare class Turntable implements IAnimation {
     constructor(options?: ITurntableOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};

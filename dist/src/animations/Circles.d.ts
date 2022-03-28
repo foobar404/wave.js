@@ -2,7 +2,7 @@ import { ICircleOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface ICirclesOptions extends ICircleOptions {
+export interface ICirclesOptions extends ICircleOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
@@ -15,4 +15,3 @@ export declare class Circles implements IAnimation {
     constructor(options?: ICirclesOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};

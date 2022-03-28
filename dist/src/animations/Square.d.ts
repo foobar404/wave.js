@@ -2,7 +2,7 @@ import { ILineOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface ISquareOptions extends ILineOptions {
+export interface ISquareOptions extends ILineOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
@@ -15,4 +15,3 @@ export declare class Square implements IAnimation {
     constructor(options?: ISquareOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};

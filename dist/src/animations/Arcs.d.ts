@@ -2,7 +2,7 @@ import { IArcOptions, ICircleOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface IArcsOptions extends IArcOptions, ICircleOptions {
+export interface IArcsOptions extends IArcOptions, ICircleOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
@@ -15,4 +15,3 @@ export declare class Arcs implements IAnimation {
     constructor(options?: IArcsOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};

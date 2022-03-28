@@ -2,7 +2,7 @@ import { ILineOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface IShineOptions extends ILineOptions {
+export interface IShineOptions extends ILineOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
@@ -17,4 +17,3 @@ export declare class Shine implements IAnimation {
     constructor(options?: IShineOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};
