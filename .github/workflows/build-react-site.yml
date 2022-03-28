@@ -21,13 +21,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies
-      run: npm i
+      run:  |
+        npm i
+        cd ./website
+        npm i 
     - name: Build Docs
       run: npm run docs
     - name: Build React
       run: | 
         cd ./website
-        npm i
         npm run build
     - name: Deploy
       run: |
