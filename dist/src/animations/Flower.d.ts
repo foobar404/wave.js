@@ -2,7 +2,7 @@ import { IPolygonOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface IFlowerOptions extends IPolygonOptions {
+export interface IFlowerOptions extends IPolygonOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
@@ -16,4 +16,3 @@ export declare class Flower implements IAnimation {
     constructor(options?: IFlowerOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};

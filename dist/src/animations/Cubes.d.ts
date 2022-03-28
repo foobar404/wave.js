@@ -2,7 +2,7 @@ import { IRectangleOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface ICubesOptions extends IRectangleOptions {
+export interface ICubesOptions extends IRectangleOptions {
     count?: number;
     cubeHeight?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
@@ -23,4 +23,3 @@ export declare class Cubes implements IAnimation {
     constructor(options?: ICubesOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};

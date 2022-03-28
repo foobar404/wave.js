@@ -2,7 +2,7 @@ import { IPolygonOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface IGlobOptions extends IPolygonOptions {
+export interface IGlobOptions extends IPolygonOptions {
     count?: number;
     diameter?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
@@ -16,4 +16,3 @@ export declare class Glob implements IAnimation {
     constructor(options?: IGlobOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};

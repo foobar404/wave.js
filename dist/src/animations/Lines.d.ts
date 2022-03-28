@@ -2,7 +2,7 @@ import { ILineOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface ILinesOptions extends ILineOptions {
+export interface ILinesOptions extends ILineOptions {
     count?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
     top?: boolean;
@@ -21,4 +21,3 @@ export declare class Lines implements IAnimation {
     constructor(options?: ILinesOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};

@@ -2,7 +2,7 @@ import { IPolygonOptions, IAnimation } from "../types";
 /**
  * @source
  */
-interface IWaveOptions extends IPolygonOptions {
+export interface IWaveOptions extends IPolygonOptions {
     count?: number;
     frequencyBand?: "base" | "lows" | "mids" | "highs";
     top?: boolean;
@@ -21,4 +21,3 @@ export declare class Wave implements IAnimation {
     constructor(options?: IWaveOptions);
     draw(audioBufferData: Uint8Array, canvas: CanvasRenderingContext2D): void;
 }
-export {};
