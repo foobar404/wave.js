@@ -4,7 +4,8 @@
   "description": "Audio visualizer library for javascript.",
   "main": "dist/bundle.js",
   "scripts": {
-    "start": "webpack",
+    "start": "webpack --watch",
+    "build": "webpack",
     "docs": "typedoc"
   },
   "keywords": [

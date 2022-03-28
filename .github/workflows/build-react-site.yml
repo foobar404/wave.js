@@ -9,33 +9,29 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x]
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
     - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        
     - name: Install dependencies
-      run: npm install
-      
+      run: npm i
     - name: Build Docs
       run: npm run docs
-
-    - name: Build
-      run: npm run build
-
+    - name: Build React
+      run: | 
+        cd ./website
+        npm i
+        npm run build
     - name: Deploy
       run: |
+        cd ./website
         git config --global user.name $user_name
         git config --global user.email $user_email
         git remote set-url origin https://${github_token}@github.com/${repository}
