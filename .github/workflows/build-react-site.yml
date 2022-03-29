@@ -27,10 +27,6 @@ jobs:
         npm i 
     - name: Build Docs
       run: npm run docs
-    - name: Build React
-      run: | 
-        cd ./website
-        CI=false npm run build
     - name: Deploy
       run: |
         cd ./website
