@@ -30,6 +30,7 @@ jobs:
     - name: Build React
       run: | 
         cd ./website
+        npm ci 
         npm run build
     - name: Deploy
       run: |
