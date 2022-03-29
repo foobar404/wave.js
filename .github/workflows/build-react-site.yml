@@ -30,9 +30,7 @@ jobs:
     - name: Build React
       run: | 
         cd ./website
-        npm run build
-      env: 
-        CI: false
+        CI=false npm run build
     - name: Deploy
       run: |
         cd ./website
