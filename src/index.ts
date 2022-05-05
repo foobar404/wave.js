@@ -48,7 +48,6 @@ export class Wave {
 
     private _play(): void {
         this._audioSource.connect(this._audioAnalyser);
-        this._audioSource.connect(this._audioContext.destination);
         this._audioAnalyser.smoothingTimeConstant = .85;
         this._audioAnalyser.fftSize = 1024;
         let audioBufferData = new Uint8Array(this._audioAnalyser.frequencyBinCount);
