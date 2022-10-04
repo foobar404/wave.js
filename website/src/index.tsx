@@ -7,7 +7,7 @@ import "./sass/index.scss";
 ReactDOM.render(
     <BrowserRouter>
         <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path={process.env.PUBLIC_URL} element={<Home />} />
         </Routes>
     </BrowserRouter>,
     document.getElementById('root')
