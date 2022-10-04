@@ -12,6 +12,11 @@ import { Wave as WaveAnimation, IWaveOptions } from "./animations/Wave";
 
 export { IArcsOptions, ICirclesOptions, ICubesOptions, IFlowerOptions, IGlobOptions, ILinesOptions, IShineOptions, ISquareOptions, ITurntableOptions, IWaveOptions };
 
+export type AudioElement = HTMLAudioElement | {
+    context: AudioContext;
+    source: MediaElementAudioSourceNode;
+}
+
 export class Wave {
     public animations = {
         "Arcs": Arcs,
@@ -33,17 +38,24 @@ export class Wave {
     private _audioSource: MediaElementAudioSourceNode;
     private _audioAnalyser: AnalyserNode;
 
-    constructor(audioElement: HTMLAudioElement, canvasElement: HTMLCanvasElement) {
-        this._audioElement = audioElement;
+    constructor(audioElement: AudioElement, canvasElement: HTMLCanvasElement) {
         this._canvasElement = canvasElement;
         this._canvasContext = this._canvasElement.getContext("2d");
-
-        this._audioElement.addEventListener("play", () => {
-            this._audioContext = new AudioContext();
-            this._audioSource = this._audioContext.createMediaElementSource(this._audioElement);
+        
+        if (audioElement instanceof HTMLAudioElement) {
+            this._audioElement = audioElement;
+            this._audioElement.addEventListener("play", () => {
+                this._audioContext = new AudioContext();
+                this._audioSource = this._audioContext.createMediaElementSource(this._audioElement);
+                this._audioAnalyser = this._audioContext.createAnalyser();
+                this._play();
+            }, { once: true });
+        } else {
+            this._audioContext = audioElement.context;
+            this._audioSource = audioElement.source;
             this._audioAnalyser = this._audioContext.createAnalyser();
             this._play();
-        }, { once: true });
+        }
     }
 
     private _play(): void {
