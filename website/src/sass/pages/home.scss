@@ -9,7 +9,7 @@
         border-radius: $radius;
         box-sizing: border-box;
         display: inline-block;
-        height: 80%;
+        height: 85%;
         margin: 16px;
         width: 250px;
         overflow: auto;
@@ -54,7 +54,7 @@
     .__display {
         display: flex;
         flex-direction: column;
-        height: 80%;
+        height: 85%;
         margin: 16px;
         width: calc(100% - 350px);
     }
@@ -63,7 +63,6 @@
         background: $gradient-1;
         border-radius: $radius;
         height: 100%;
-        margin: 16px;
         overflow: hidden;
     }
 
@@ -71,7 +70,7 @@
         background: $gradient-1;
         border-radius: $radius;
         display: flex;
-        margin: 16px;
+        margin-bottom: 16px;
         padding: 16px;
     }
 

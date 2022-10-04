@@ -12,13 +12,12 @@
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
-    "node-sass": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
-    "react-scripts": "5.0.0",
-    "typescript": "^4.6.2",
-    "web-vitals": "^2.1.4"
+    "react-router-dom": "^6.4.1",
+    "react-scripts": "^5.0.1",
+    "typescript": "^4.6.2"
   },
   "homepage": "https://foobar404.github.io/Wave.js/",
   "scripts": {
@@ -48,10 +47,8 @@
     ]
   },
   "devDependencies": {
-    "@material-ui/core": "^4.12.3",
-    "@material-ui/icons": "^4.11.2",
     "gh-pages": "^3.2.3",
-    "material-ui-audio-player": "^1.7.1",
-    "mixpanel-browser": "^2.45.0"
+    "mixpanel-browser": "^2.45.0",
+    "sass": "^1.55.0"
   }
 }

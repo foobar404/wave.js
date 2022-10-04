@@ -1,12 +1,15 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Home} from "./pages/Home";
+import { Home } from "./pages/Home";
 import "./sass/index.scss";
 
 ReactDOM.render(
-    <React.StrictMode>
-        <Home/>
-    </React.StrictMode>,
+    <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Home />} />
+        </Routes>
+    </BrowserRouter>,
     document.getElementById('root')
 );
 

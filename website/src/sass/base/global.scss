@@ -1,6 +1,8 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap');
 
-html, body, #root {
+html,
+body,
+#root {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -8,23 +10,25 @@ html, body, #root {
 }
 
 body {
-  background: url(https://demos.creative-tim.com/vision-ui-dashboard-react/static/media/body-background.7d7d88a8.png) 0 0 / cover;
+  background: radial-gradient(circle farthest-corner at 10% 20%, rgba(37, 145, 251, 0.5) 0.1%, rgba(0, 7, 128, .5) 99.8%),
+    linear-gradient(189deg, rgba(209, 0, 116, 1) 11.2%, rgba(110, 44, 107, 1) 91.1%);
 }
 
 * {
   font-family: 'Kanit', sans-serif;
 }
 
-*::-webkit-scrollbar{
+*::-webkit-scrollbar {
   height: 10px;
   width: 10px;
 }
 
-*::-webkit-scrollbar-thumb{
+*::-webkit-scrollbar-thumb {
   background: $color-primary;
   border-radius: $radius;
 }
 
-.MuiPaper-root{
-  background: $color-primary !important;
+audio::-webkit-media-controls-panel {
+  background: linear-gradient(45deg, #1cc7fd99, #0075ff99),
+    linear-gradient(180deg, #2a2f9b99, #0e0b1b99);
 }
