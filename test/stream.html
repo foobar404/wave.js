@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="../dist/bundle.js"></script>
+
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <canvas height="200" width="200"></canvas>
+
+        <script>
+            (async () => {
+                const canvas = document.querySelector("canvas");
+                const audioCtx = new AudioContext();
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const wave = new Wave(
+                    { context: audioCtx, source: audioCtx.createMediaStreamSource(stream) },
+                    canvas,
+                    true
+                );
+                wave.addAnimation(
+                    new wave.animations.Wave({
+                        lineColor: "white",
+                        lineWidth: 10,
+                        fillColor: { gradient: ["#FF9A8B", "#FF6A88", "#FF99AC"] },
+                        mirroredX: true,
+                        count: 5,
+                        rounded: true,
+                        frequencyBand: "base",
+                    })
+                );
+                wave.addAnimation(
+                    new wave.animations.Wave({
+                        lineColor: "white",
+                        lineWidth: 10,
+                        fillColor: { gradient: ["#FA8BFF", "#2BD2FF", "#2BFF88"] },
+                        mirroredX: true,
+                        count: 60,
+                        rounded: true,
+                    })
+                );
+                wave.addAnimation(
+                    new wave.animations.Wave({
+                        lineColor: "white",
+                        lineWidth: 10,
+                        fillColor: { gradient: ["#FBDA61", "#FF5ACD"] },
+                        mirroredX: true,
+                        count: 25,
+                        rounded: true,
+                        frequencyBand: "highs",
+                    })
+                );
+            })();
+        </script>
+    </body>
+</html>

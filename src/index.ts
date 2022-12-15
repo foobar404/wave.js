@@ -79,7 +79,7 @@ export class Wave {
 
     private _play(): void {
         this._audioSource.connect(this._audioAnalyser);
-        if (this._muteAudio) {
+        if (!this._muteAudio) {
             this._audioSource.connect(this._audioContext.destination);
         }
         this._audioAnalyser.smoothingTimeConstant = 0.85;
