@@ -9,10 +9,10 @@ import { Shine, IShineOptions } from "./animations/Shine";
 import { Square, ISquareOptions } from "./animations/Square";
 import { Turntable, ITurntableOptions } from "./animations/Turntable";
 import { Wave as WaveAnimation, IWaveOptions } from "./animations/Wave";
-export { IArcsOptions, ICirclesOptions, ICubesOptions, IFlowerOptions, IGlobOptions, ILinesOptions, IShineOptions, ISquareOptions, ITurntableOptions, IWaveOptions };
+export { IArcsOptions, ICirclesOptions, ICubesOptions, IFlowerOptions, IGlobOptions, ILinesOptions, IShineOptions, ISquareOptions, ITurntableOptions, IWaveOptions, };
 export declare type AudioElement = HTMLAudioElement | {
     context: AudioContext;
-    source: MediaElementAudioSourceNode;
+    source: MediaElementAudioSourceNode | MediaStreamAudioSourceNode;
 };
 export declare class Wave {
     animations: {
@@ -34,7 +34,8 @@ export declare class Wave {
     private _audioContext;
     private _audioSource;
     private _audioAnalyser;
-    constructor(audioElement: AudioElement, canvasElement: HTMLCanvasElement);
+    private _muteAudio;
+    constructor(audioElement: AudioElement, canvasElement: HTMLCanvasElement, muteAudio?: boolean);
     private _play;
     addAnimation(animation: IAnimation): void;
     clearAnimations(): void;
