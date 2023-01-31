@@ -61,15 +61,7 @@ wave.addAnimation(new wave.animations.Glob({
 ```
 
 # Contributing
-<ol>
-   <li>Fork Wave.js repo.</li>
-   <li>Clone to your local computer.</li>
-   <li>Run "npm i" in the root folder to install dependencies.</li>
-   <li>Run "npm start" to start the code watcher.</li>
-   <li>Open the src folder and make a change to one of the src files.</li>
-   <li>In the package.json, increase the version number by one.</li>
-   <li>Push to remote branch and create a pull request to the Wave.js main branch.</li>
-</ol>
+Get involved! Check out the [Contributing Guide](./CONTRIBUTING.md) for how to get started.
 
 # License
 [MIT](https://choosealicense.com/licenses/mit/)
