@@ -19,7 +19,7 @@
     "react-scripts": "^5.0.1",
     "typescript": "^4.6.2"
   },
-  "homepage": "https://foobar404.github.io/Wave.js/",
+  "homepage": "https://foobar404.dev/wave.js/",
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false react-scripts build",
