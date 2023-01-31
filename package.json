@@ -26,10 +26,10 @@
   "homepage": "https://foobar404.dev/wave.js/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/foobar404/Wave.js.git"
+    "url": "https://github.com/foobar404/wave.js.git"
   },
   "bugs": {
-    "url": "https://github.com/foobar404/Wave.js/issues"
+    "url": "https://github.com/foobar404/wave.js/issues"
   },
   "dependencies": {},
   "devDependencies": {
