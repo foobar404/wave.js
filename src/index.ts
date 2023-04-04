@@ -51,30 +51,50 @@ export class Wave {
     private _audioSource: MediaElementAudioSourceNode | MediaStreamAudioSourceNode;
     private _audioAnalyser: AnalyserNode;
     private _muteAudio: boolean;
+    private _interacted: boolean;
 
     constructor(audioElement: AudioElement, canvasElement: HTMLCanvasElement, muteAudio: boolean = false) {
         this._canvasElement = canvasElement;
         this._canvasContext = this._canvasElement.getContext("2d");
         this._muteAudio = muteAudio;
+        this._interacted = false;
 
         if (audioElement instanceof HTMLAudioElement) {
             this._audioElement = audioElement;
-            this._audioElement.addEventListener(
-                "play",
-                () => {
-                    this._audioContext = new AudioContext();
-                    this._audioSource = this._audioContext.createMediaElementSource(this._audioElement);
-                    this._audioAnalyser = this._audioContext.createAnalyser();
-                    this._play();
-                },
-                { once: true }
-            );
+
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            if (isSafari) {
+                const events = ['touchstart', 'touchmove', 'touchend', 'mouseup', 'click'];
+                events.forEach((event) => {
+                    document.body.addEventListener(
+                        event,
+                        () => this.connectAnalyser(),
+                        { once: true }
+                    );
+                });
+            } else {
+                this._audioElement.addEventListener(
+                    "play",
+                    () => this.connectAnalyser(),
+                    { once: true }
+                );
+            }
         } else {
             this._audioContext = audioElement.context;
             this._audioSource = audioElement.source;
             this._audioAnalyser = this._audioContext.createAnalyser();
             this._play();
         }
+    }
+
+    private connectAnalyser(): void {
+        if (this._interacted) return;
+
+        this._interacted = true;
+        this._audioContext = new AudioContext();
+        this._audioSource = this._audioContext.createMediaElementSource(this._audioElement);
+        this._audioAnalyser = this._audioContext.createAnalyser();
+        this._play();
     }
 
     private _play(): void {
