@@ -28,7 +28,8 @@ export type AudioElement =
     | {
           context: AudioContext;
           source: MediaElementAudioSourceNode | MediaStreamAudioSourceNode;
-      };
+      }
+    | AnalyserNode;
 
 export class Wave {
     public animations = {
@@ -47,8 +48,8 @@ export class Wave {
     private _audioElement: HTMLAudioElement;
     private _canvasElement: HTMLCanvasElement;
     private _canvasContext: CanvasRenderingContext2D;
-    private _audioContext: AudioContext;
-    private _audioSource: MediaElementAudioSourceNode | MediaStreamAudioSourceNode;
+    private _audioContext: AudioContext | null;
+    private _audioSource: MediaElementAudioSourceNode | MediaStreamAudioSourceNode | null;
     private _audioAnalyser: AnalyserNode;
     private _muteAudio: boolean;
     private _interacted: boolean;
@@ -79,7 +80,12 @@ export class Wave {
                     { once: true }
                 );
             }
-        } else {
+        } else if (audioElement instanceof AnalyserNode) {
+            this._audioAnalyser = audioElement;
+            this._audioContext = null;
+            this._audioSource = null;
+            this._play();
+        } else if (audioElement) {
             this._audioContext = audioElement.context;
             this._audioSource = audioElement.source;
             this._audioAnalyser = this._audioContext.createAnalyser();
@@ -98,9 +104,11 @@ export class Wave {
     }
 
     private _play(): void {
-        this._audioSource.connect(this._audioAnalyser);
-        if (!this._muteAudio) {
-            this._audioSource.connect(this._audioContext.destination);
+        if (this._audioSource) {
+            this._audioSource.connect(this._audioAnalyser);
+            if (!this._muteAudio) {
+                this._audioSource.connect(this._audioContext.destination);
+            }
         }
         this._audioAnalyser.smoothingTimeConstant = 0.85;
         this._audioAnalyser.fftSize = 1024;

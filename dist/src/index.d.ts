@@ -13,7 +13,7 @@ export { IArcsOptions, ICirclesOptions, ICubesOptions, IFlowerOptions, IGlobOpti
 export declare type AudioElement = HTMLAudioElement | {
     context: AudioContext;
     source: MediaElementAudioSourceNode | MediaStreamAudioSourceNode;
-};
+} | AnalyserNode;
 export declare class Wave {
     animations: {
         Arcs: typeof Arcs;

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="../dist/bundle.js"></script>
+
+        <style>
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <canvas height="200" width="200"></canvas>
+        <audio src="./audio.mp3" controls style="position: fixed; right: 0px"></audio>
+
+        <script>
+            let canvas = document.querySelector("canvas");
+            let audio = document.querySelector("audio");
+
+            const context = new AudioContext();
+            const source = context.createMediaElementSource(document.querySelector("audio"));
+            const analyser = context.createAnalyser();
+
+            source.connect(analyser);
+            analyser.connect(context.destination);
+
+            let wave = new Wave(analyser, canvas);
+
+            canvas.height = window.innerHeight - 30;
+            canvas.width = window.innerWidth - 30;
+
+            wave.addAnimation(new wave.animations.Cubes());
+        </script>
+    </body>
+</html>
